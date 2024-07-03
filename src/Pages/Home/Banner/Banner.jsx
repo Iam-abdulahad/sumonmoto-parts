@@ -6,7 +6,7 @@ const Banner = () => {
             className="w-full bg-center bg-cover h-[38rem]"
             style={{ backgroundImage: `url(${backgroundImage})` }}
         >
-            <div className="flex items-center justify-center w-full h-full bg-gray-900/40">
+            <div className="flex items-center justify-center w-full h-full bg-gray-900/40 backdrop-blur-sm">
                 <div className="text-center">
                     <h1 className="title1 text-3xl font-semibold text-white lg:text-4xl">
                         Precision Engineered <span className="text-blue-400">Motor Parts</span>
