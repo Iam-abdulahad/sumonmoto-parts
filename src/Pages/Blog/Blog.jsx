@@ -1,8 +1,9 @@
+import Products from "../Products/Products";
 
 const Blog = () => {
     return (
-        <div>
-            <h3 className="text-red-500">Questions snd answer</h3>
+        <div className="">
+            <Products></Products>
         </div>
     );
 };

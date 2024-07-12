@@ -1,0 +1,83 @@
+[
+               {
+                   "name": "Precision Ball Bearings",
+                   "image": "https://img.freepik.com/free-photo/various-work-tools-worktop_1170-1505.jpg?t=st=1720772985~exp=1720776585~hmac=e1ffe1fecc0fbaffb7bc1f9de4fbcc24b03238385c13c0c0bae0c7952dd70c2d&w=1060",
+                   "minimum_order_quantity": 50,
+                   "available_quantity": 10000,
+                   "price": 0.50,
+                   "description": "High-quality precision ball bearings for various mechanical applications."
+               },
+               {
+                   "name": "Stainless Steel Bolts",
+                   "image": "https://media.gettyimages.com/id/1456345681/photo/many-hex-nuts-and-screws-on-yellow-background.jpg?s=2048x2048&w=gi&k=20&c=JITr40JPj-dNFrnluK-LaOinwGSZZ8koBedeia03lQc=",
+                   "minimum_order_quantity": 100,
+                   "available_quantity": 50000,
+                   "price": 0.10,
+                   "description": "Durable stainless steel bolts available in multiple sizes."
+               },
+               {
+                   "name": "Rubber Gaskets",
+                   "image": "https://media.istockphoto.com/id/587950452/photo/various-rubber-products-and-sealing-products.jpg?s=2048x2048&w=is&k=20&c=1z-48OCbAvG8J3AQJonKRU-DfF2tPnseJkwyRXa2zz4=",
+                   "minimum_order_quantity": 200,
+                   "available_quantity": 20000,
+                   "price": 0.25,
+                   "description": "Versatile rubber gaskets for sealing and insulation purposes."
+               },
+               {
+                   "name": "Aluminum Heat Sinks",
+                   "image": "https://www.shutterstock.com/shutterstock/photos/1754093795/display_1500/stock-photo-cooling-radiator-for-the-mini-computer-board-cooling-electronics-1754093795.jpg",
+                   "minimum_order_quantity": 30,
+                   "available_quantity": 5000,
+                   "price": 5.00,
+                   "description": "Efficient aluminum heat sinks for thermal management in electronic devices."
+               },
+               {
+                   "name": "Copper Tubing",
+                   "image": "https://media.istockphoto.com/id/522944919/photo/copper-pipes-on-warehouse.webp?s=2048x2048&w=is&k=20&c=nHtYv2iQzX0lHujf9E0PD_XHg6MYGp1riZ-4dTGpSIU=",
+                   "minimum_order_quantity": 10,
+                   "available_quantity": 3000,
+                   "price": 15.00,
+                   "description": "High-grade copper tubing for plumbing and HVAC systems."
+               },
+               {
+                   "name": "Ceramic Capacitors",
+                   "image": "https://www.shutterstock.com/shutterstock/photos/2385417135/display_1500/stock-photo-smd-ceramic-capacitors-on-a-blue-table-electronic-component-2385417135.jpg",
+                   "minimum_order_quantity": 500,
+                   "available_quantity": 100000,
+                   "price": 0.05,
+                   "description": "Reliable ceramic capacitors for various electronic circuits."
+               },
+               {
+                   "name": "Carbon Fiber Sheets",
+                   "image": "https://media.istockphoto.com/id/487700790/photo/car-contour-carbon-fibre.jpg?s=1024x1024&w=is&k=20&c=uBscNXbG92HagDQHJcuU0tuWJtQ89DrBb3j9XEI7j-c=",
+                   "minimum_order_quantity": 5,
+                   "available_quantity": 1000,
+                   "price": 50.00,
+                   "description": "Lightweight and strong carbon fiber sheets for structural applications."
+               },
+               {
+                   "name": "Silicon Wafers",
+                   "image": "https://media.istockphoto.com/id/1325037614/photo/silicon-wafers-and-microcircuits-with-automation-system-control-application.jpg?s=1024x1024&w=is&k=20&c=ibUvcFjKMVoB2Gg-LI8bnJlcMrju2qHl2JkWt9bbtAM=",
+                   "minimum_order_quantity": 25,
+                   "available_quantity": 2000,
+                   "price": 10.00,
+                   "description": "High-purity silicon wafers for semiconductor manufacturing."
+               },
+               {
+                   "name": "Hydraulic Pistons",
+                   "image": "https://media.istockphoto.com/id/1197856573/photo/powerful-hydraulic-cylinders-the-main-power-and-driving-element-for-construction-equipment.jpg?s=1024x1024&w=is&k=20&c=fRkhANj_T23O-bYEE5Uwk25bmG1JRCeNAz7dq2IwTIU=",
+                   "minimum_order_quantity": 10,
+                   "available_quantity": 1500,
+                   "price": 25.00,
+                   "description": "Robust hydraulic pistons for heavy machinery and industrial use."
+               },
+               {
+                   "name": "Titanium Screws",
+                   "image": "https://www.shutterstock.com/shutterstock/photos/1550767865/display_1500/stock-photo-close-up-of-several-chrome-metal-bolts-with-nuts-standing-on-a-metal-stand-next-to-each-other-the-1550767865.jpg",
+                   "minimum_order_quantity": 50,
+                   "available_quantity": 8000,
+                   "price": 2.00,
+                   "description": "Corrosion-resistant titanium screws for aerospace and medical applications."
+               }
+           ]
+           

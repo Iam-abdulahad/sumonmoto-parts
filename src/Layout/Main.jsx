@@ -6,10 +6,12 @@ const Main = () => {
   return (
     <div>
       <Navbar></Navbar>
-      <div className="bg-custom-background bg-cover bg-center"> 
+      <div className="bg-custom-background bg-cover bg-center bg-fixed">
         <Outlet></Outlet>
       </div>
-      <Footer></Footer>
+      <div className="bg-footer-background bg-cover bg-center">
+        <Footer></Footer>
+      </div>
     </div>
   );
 };
