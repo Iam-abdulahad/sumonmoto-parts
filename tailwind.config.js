@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        "custom-background": "url('./src/assets/bg.jpg')",
-        "footer-background": "url('./src/assets/footer.jpg')",
+        "custom-background": "url('/Images/bg.jpg')",
+        "footer-background": "url('/Images/footer.jpg')",
       },
       blur: {
         xs: '2px',
