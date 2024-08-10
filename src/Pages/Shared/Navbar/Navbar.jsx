@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
-import { LuLogOut } from "react-icons/lu";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import app from "../../../Firebase/firebase.config";
 
@@ -121,10 +120,10 @@ const Navbar = () => {
                       </li>
                       <li>
                         <Link
-                          to="/review"
+                          to="/add_review"
                           className="block px-4 py-2 hover:bg-gray-100"
                         >
-                          Review
+                          Add A Review
                         </Link>
                       </li>
                       <li>
@@ -255,10 +254,10 @@ const Navbar = () => {
                   </Link>
 
                   <Link
-                    to="/review"
+                    to="/add_review"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
-                    Review
+                   Add A Review
                   </Link>
                 </div>
               )}

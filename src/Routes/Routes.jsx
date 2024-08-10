@@ -9,6 +9,7 @@ import SignUp from "../Pages/Login/SignUp/SignUp";
 import Products from "../Pages/Products/Products";
 import NotFound from "../Pages/NotFound/NotFound";
 import ProfilePage from "../Pages/UsersInfo/ProfilePage";
+import AddReview from "../Pages/Home/CustomerReview/AddReview";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage></ProfilePage>
+      },
+      {
+        path: "/add_review",
+        element: <AddReview></AddReview>
       },
       {
         path: "/login",
