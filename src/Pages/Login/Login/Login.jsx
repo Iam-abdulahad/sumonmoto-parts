@@ -28,7 +28,7 @@ const Login = () => {
   };
 
   return (
-    <section className="h-screen flex justify-center items-center backdrop-blur-sm">
+    <section className="h-screen flex justify-center items-center backdrop-blur-lg">
         
       <div className="w-full max-w-sm p-6 my-8 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div className="flex justify-center mx-auto">

@@ -1,7 +1,7 @@
 const CompanyOverview = () => {
   return (
     <section className="">
-      <div className="text-gray-800 py-20 backdrop-blur-sm">
+      <div className="text-gray-800 py-20 backdrop-blur-lg">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <h2 className="text-5xl font-extrabold mb-10 text-black">About Us</h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">

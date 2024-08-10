@@ -6,8 +6,7 @@ import app from "../../../Firebase/firebase.config";
 
 const auth = getAuth(app);
 
-const defaultAvatar =
-  "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"; // Update with the path to your default avatar
+const defaultAvatar = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"; // Update with the path to your default avatar
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

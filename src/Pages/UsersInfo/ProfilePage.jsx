@@ -5,6 +5,9 @@ import app from "../../Firebase/firebase.config";
 
 const auth = getAuth(app);
 
+const defaultAvatar =
+  "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png";
+
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
 
@@ -23,15 +26,16 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen backdrop-blur-sm flex flex-col items-center p-4">
+    <div className="min-h-screen backdrop-blur-lg flex flex-col items-center p-4">
       {/* Header */}
       <div className="bg-white w-full max-w-4xl rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center">
           <img
-            className="w-24 h-24 rounded-full mr-4"
-            src={user.photoURL || "https://via.placeholder.com/150"}
+            className="w-24 h-24 rounded-full mr-4 border-4 border-blue-400"
+            src={user.photoURL || { defaultAvatar }}
             alt="Profile"
           />
+
           <div>
             <h1 className="text-2xl font-bold text-gray-800">
               {user.displayName || "John Doe"}

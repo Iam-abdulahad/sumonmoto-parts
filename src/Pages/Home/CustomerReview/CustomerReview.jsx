@@ -1,6 +1,6 @@
 const CustomerReview = () => {
   return (
-               <section className="backdrop-blur-sm dark:bg-gray-900">
+               <section className="backdrop-blur-lg dark:bg-gray-900">
                <div className="container px-6 py-10 mx-auto">
                    <div className="mt-6 md:flex md:items-center md:justify-between">
                        <div>
