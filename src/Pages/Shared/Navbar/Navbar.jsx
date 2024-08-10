@@ -89,7 +89,7 @@ const Navbar = () => {
                   className="flex items-center px-1 pt-1 text-sm font-medium focus:outline-none"
                 >
                   <img
-                    src={defaultAvatar}
+                    src={user.photoURL || defaultAvatar}
                     alt="User Avatar"
                     className="w-8 h-8 rounded-full mr-2"
                   />

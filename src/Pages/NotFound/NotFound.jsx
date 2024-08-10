@@ -56,7 +56,7 @@ const NotFound = () => {
         <div className="relative w-full mt-12 lg:w-1/2 lg:mt-0">
           <img
             className="w-full max-w-lg lg:mx-auto"
-            src="https://static.vecteezy.com/system/resources/thumbnails/005/084/699/small/internet-network-warning-404-error-page-or-file-not-found-for-web-page-internet-error-page-or-issue-not-found-on-network-free-vector.jpg"
+            src="https://img.freepik.com/free-vector/error-404-concept-illustration_114360-1811.jpg?t=st=1722869477~exp=1722873077~hmac=a08e3fee291dbdf10fd6225464fd108e1e29f249ffae12acc2f223a7d490af1a&w=1060"
             alt="Illustration"
           />
         </div>

@@ -4,9 +4,9 @@ import Footer from "../Pages/Shared/Footer/Footer";
 
 const Main = () => {
   return (
-    <div>
+    <div className="">
       <Navbar></Navbar>
-      <div className="bg-custom-background bg-cover bg-center bg-fixed">
+      <div className="min-h-screen bg-custom-background bg-cover bg-center bg-fixed">
         <Outlet></Outlet>
       </div>
       <div className="bg-footer-background bg-cover bg-center">

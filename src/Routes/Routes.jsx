@@ -8,6 +8,7 @@ import Login from "../Pages/Login/Login/Login";
 import SignUp from "../Pages/Login/SignUp/SignUp";
 import Products from "../Pages/Products/Products";
 import NotFound from "../Pages/NotFound/NotFound";
+import ProfilePage from "../Pages/UsersInfo/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "/portfolio",
         element: <Portfolio></Portfolio>
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage></ProfilePage>
       },
       {
         path: "/login",

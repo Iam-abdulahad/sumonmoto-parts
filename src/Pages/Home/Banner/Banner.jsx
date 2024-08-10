@@ -17,7 +17,7 @@ const Banner = () => {
             <div className="flex items-center justify-center w-full h-full bg-gray-900/40 backdrop-blur-sm">
                 <div className="text-center">
                     <h1 className="title1 text-3xl font-semibold text-white lg:text-4xl">
-                        Precision Engineered <span className="text-blue-400">Motor Parts</span>
+                        Sumon Engineered <span className="text-blue-400">Motor Parts</span>
                     </h1>
                     <p className="mt-4 text-lg text-white lg:text-xl">
                         Reliable. Durable. High Performance.
