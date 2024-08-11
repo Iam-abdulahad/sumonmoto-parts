@@ -1,6 +1,4 @@
-import {
-  createBrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import Portfolio from "../Pages/Portfolio/Portfolio";
 import Home from "../Pages/Home/Home/Home";
@@ -10,6 +8,7 @@ import Products from "../Pages/Products/Products";
 import NotFound from "../Pages/NotFound/NotFound";
 import ProfilePage from "../Pages/UsersInfo/ProfilePage";
 import AddReview from "../Pages/Home/CustomerReview/AddReview";
+import MyOrders from "../Pages/UsersInfo/MyOrders";
 
 export const router = createBrowserRouter([
   {
@@ -18,36 +17,40 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element:<Home></Home>
+        element: <Home></Home>,
       },
       {
         path: "/products",
-        element: <Products></Products>
+        element: <Products></Products>,
       },
       {
         path: "/portfolio",
-        element: <Portfolio></Portfolio>
+        element: <Portfolio></Portfolio>,
       },
       {
         path: "/profile",
-        element: <ProfilePage></ProfilePage>
+        element: <ProfilePage></ProfilePage>,
+      },
+      {
+        path: "/orders",
+        element: <MyOrders></MyOrders>,
       },
       {
         path: "/add_review",
-        element: <AddReview></AddReview>
+        element: <AddReview></AddReview>,
       },
       {
         path: "/login",
-        element: <Login></Login>
+        element: <Login></Login>,
       },
       {
         path: "/sign_up",
-        element: <SignUp></SignUp>
+        element: <SignUp></SignUp>,
       },
       {
         path: "*",
-        element: <NotFound></NotFound>
+        element: <NotFound></NotFound>,
       },
-    ]
+    ],
   },
 ]);
