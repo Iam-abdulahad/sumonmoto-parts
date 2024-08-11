@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
-import Portfolio from "../Pages/Portfolio/Portfolio";
 import Home from "../Pages/Home/Home/Home";
 import Login from "../Pages/Login/Login/Login";
 import SignUp from "../Pages/Login/SignUp/SignUp";
@@ -9,6 +8,7 @@ import NotFound from "../Pages/NotFound/NotFound";
 import ProfilePage from "../Pages/UsersInfo/ProfilePage";
 import AddReview from "../Pages/Home/CustomerReview/AddReview";
 import MyOrders from "../Pages/UsersInfo/MyOrders";
+import ManageProducts from "../Pages/AdminPanel/ManageProducts";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/portfolio",
-        element: <Portfolio></Portfolio>,
+        element: <ManageProducts></ManageProducts>
       },
       {
         path: "/profile",
