@@ -8,7 +8,7 @@ import NotFound from "../Pages/NotFound/NotFound";
 import ProfilePage from "../Pages/UsersInfo/ProfilePage";
 import AddReview from "../Pages/Home/CustomerReview/AddReview";
 import MyOrders from "../Pages/UsersInfo/MyOrders";
-import ManageProducts from "../Pages/AdminPanel/ManageProducts";
+import UsersPage from "../Pages/AdminPanel/Users";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/portfolio",
-        element: <ManageProducts></ManageProducts>
+        element: <UsersPage></UsersPage>
       },
       {
         path: "/profile",
