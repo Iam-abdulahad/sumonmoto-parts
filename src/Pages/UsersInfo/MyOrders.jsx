@@ -10,10 +10,22 @@ const MyOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/orders");
-        setOrders(response.data);
+        const response = await axios.get("https://fakestoreapi.com/products");
+        // Mock order data structure
+        const mockOrders = response.data.map((product, index) => ({
+          id: index + 1,
+          date: new Date().toLocaleDateString(),
+          status: "Pending",
+          total: `$${(product.price * 1).toFixed(2)}`,
+          items: [
+            {
+              name: product.title,
+              quantity: 1,
+            },
+          ],
+        }));
+        setOrders(mockOrders);
       } catch (error) {
-        // Show error to user using SweetAlert2
         Swal.fire({
           title: "Error!",
           text: "Failed to fetch orders. Please try again later.",
@@ -38,9 +50,27 @@ const MyOrders = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4 text-center">My Orders</h1>
       {loading ? (
-        <div className="text-center">
-          <div className="loader"></div>
-          <p>Loading...</p>
+        <div className="flex justify-center items-center h-64">
+          <svg
+            className="animate-spin h-8 w-8 text-blue-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            />
+          </svg>
         </div>
       ) : (
         <div className="grid gap-4">
@@ -87,7 +117,7 @@ const MyOrders = () => {
                 No Orders Found
               </h2>
               <p className="text-gray-500">
-                You haven't placed any orders yet. Start shopping now and your
+                You have not placed any orders yet. Start shopping now and your
                 orders will appear here.
               </p>
               <button className="mt-4 px-6 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
