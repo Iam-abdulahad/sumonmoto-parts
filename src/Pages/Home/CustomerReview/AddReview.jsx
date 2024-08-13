@@ -38,7 +38,7 @@ const AddReview = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="max-w-lg w-full p-6 mx-4 mt-10 bg-white rounded-lg shadow-lg">
+      <div className="max-w-lg w-full p-6 mx-4 my-10 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-sky-600 text-center">
           Add a Review
         </h2>

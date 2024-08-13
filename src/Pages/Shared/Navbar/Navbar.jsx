@@ -6,7 +6,8 @@ import app from "../../../Firebase/firebase.config";
 
 const auth = getAuth(app);
 
-const defaultAvatar = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"; // Update with the path to your default avatar
+const defaultAvatar =
+  "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"; // Update with the path to your default avatar
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,64 +82,63 @@ const Navbar = () => {
 
             {user ? (
               <div className="relative inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-              <div className="relative flex items-center my-auto">
-                <button
-                  onClick={toggleDropdown}
-                  className="flex items-center px-1 pt-1 text-sm font-medium focus:outline-none"
-                >
-                  <img
-                    src={user.photoURL || defaultAvatar}
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full mr-2"
-                  />
-                  <span>{user.displayName || user.email}</span>
-                  <span className="ml-2">&#x25bc;</span>
-                </button>
-            
-                {isDropdownOpen && (
-                  <div className="absolute left-0 top-full mt-2 w-44 bg-white rounded-lg shadow z-10">
-                    <ul
-                      className="py-2 text-sm text-gray-700"
-                      aria-labelledby="dropdownDefaultButton"
-                    >
-                      <li>
-                        <Link
-                          to="/profile"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          My Profile
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/orders"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          My Orders
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/add_review"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Add A Review
-                        </Link>
-                      </li>
-                      <li>
-                        <button
-                          onClick={handleLogout}
-                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                        >
-                          Sign out
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
+                <div className="relative flex items-center my-auto">
+                  <button
+                    onClick={toggleDropdown}
+                    className="flex items-center px-1 pt-1 text-sm font-medium focus:outline-none"
+                  >
+                    <img
+                      src={user.photoURL || defaultAvatar}
+                      alt="User Avatar"
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    <span>{user.displayName || user.email}</span>
+                    <span className="ml-2">&#x25bc;</span>
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute left-0 top-full mt-2 w-44 bg-white rounded-lg shadow z-10">
+                      <ul
+                        className="py-2 text-sm text-gray-700"
+                        aria-labelledby="dropdownDefaultButton"
+                      >
+                        <li>
+                          <Link
+                            to="/profile"
+                            className="block px-4 py-2 hover:bg-gray-100"
+                          >
+                            My Profile
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/orders"
+                            className="block px-4 py-2 hover:bg-gray-100"
+                          >
+                            My Orders
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/add_review"
+                            className="block px-4 py-2 hover:bg-gray-100"
+                          >
+                            Add A Review
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            onClick={handleLogout}
+                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                          >
+                            Sign out
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-            
             ) : (
               <Link
                 to="/login"
@@ -256,7 +256,7 @@ const Navbar = () => {
                     to="/add_review"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
-                   Add A Review
+                    Add A Review
                   </Link>
                 </div>
               )}
