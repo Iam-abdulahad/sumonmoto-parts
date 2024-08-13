@@ -13,13 +13,46 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createUser(name, email, password);
-      Swal.fire({
-        icon: "success",
-        title: "Account Created!",
-        text: "Verification email sent. Please check your inbox.",
+      // Create user with Firebase
+      const userCredential = await createUser(name, email, password);
+      const user = userCredential.user;
+
+      // Prepare the data to be sent to the server
+      const userData = {
+        uid: user.uid,
+        name,
+        email,
+        role: "user",
+        facebookURL: "",
+        phone: "",
+      };
+
+      // Send the user data to your server
+      const response = await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
       });
+
+      if (response.ok) {
+        // Successfully saved to the server
+        Swal.fire({
+          icon: "success",
+          title: "Account Created!",
+          text: "Verification email sent. Please check your inbox.",
+        });
+      } else {
+        // Handle errors if saving to server failed
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to save user data to the server.",
+        });
+      }
     } catch (error) {
+      // Handle errors during Firebase authentication
       Swal.fire({
         icon: "error",
         title: "Error",

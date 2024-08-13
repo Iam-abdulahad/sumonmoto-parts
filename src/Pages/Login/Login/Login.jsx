@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import GoogleLogin from "../SocialLogin/GoogleLogin";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Providers/AuthProviders";
+import ForgotPasswordModal from "./ForgotPasswordModal"; // Assuming you have this component
+import { sendPasswordResetEmail } from "firebase/auth";
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,9 +30,25 @@ const Login = () => {
     }
   };
 
+  const sendPasswordReset = async (email) => {
+    try {
+      await sendPasswordResetEmail(email);
+      Swal.fire({
+        icon: "success",
+        title: "Email Sent!",
+        text: "Check your email for a link to reset your password.",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message,
+      });
+    }
+  };
+
   return (
     <section className="h-screen flex justify-center items-center backdrop-blur-lg">
-        
       <div className="w-full max-w-sm p-6 my-8 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div className="flex justify-center mx-auto">
           <h2>Login</h2>
@@ -63,6 +82,7 @@ const Login = () => {
               <a
                 href="#"
                 className="text-xs text-gray-600 dark:text-gray-400 hover:underline"
+                onClick={() => setModalOpen(true)} // Open the modal
               >
                 Forget Password?
               </a>
@@ -112,7 +132,13 @@ const Login = () => {
           </Link>
         </p>
       </div>
-      
+
+      {/* Modal for Forget Password */}
+      <ForgotPasswordModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        sendPasswordResetEmail={sendPasswordReset}
+      />
     </section>
   );
 };
