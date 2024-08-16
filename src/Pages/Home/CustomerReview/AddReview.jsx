@@ -1,5 +1,6 @@
 import { getAuth } from "firebase/auth";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import app from "../../../Firebase/firebase.config";
 
 const AddReview = () => {
@@ -8,6 +9,7 @@ const AddReview = () => {
     email: "",
     rating: "",
     review: "",
+    photoURL: "",
   });
 
   useEffect(() => {
@@ -19,6 +21,7 @@ const AddReview = () => {
         ...prevFormData,
         name: user.displayName || "",
         email: user.email || "",
+        photoURL: user.photoURL || "",
       }));
     }
   }, []);
@@ -30,10 +33,44 @@ const AddReview = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission (e.g., send to API)
-    console.log(formData);
+    try {
+      const response = await fetch("http://localhost:5000/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit review");
+      }
+
+      // Show success message
+      Swal.fire({
+        icon: "success",
+        title: "Review Submitted!",
+        text: "Thank you for your feedback.",
+      });
+
+      // Optionally reset form
+      setFormData({
+        name: formData.name,
+        email: formData.email,
+        rating: "",
+        review: "",
+        photoURL: formData.photoURL,
+      });
+    } catch (error) {
+      // Show error message
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: error.message,
+      });
+    }
   };
 
   return (
