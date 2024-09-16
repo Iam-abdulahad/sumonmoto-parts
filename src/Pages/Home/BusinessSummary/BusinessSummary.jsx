@@ -14,7 +14,7 @@ const BusinessSummary = () => {
       className="rounded-lg shadow-lg bg-no-repeat bg-cover bg-center bg-fixed"
       style={{
         backgroundImage:
-          "url(https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "url(https://images.pexels.com/photos/1023952/pexels-photo-1023952.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       }}
     >
       <div className="p-8 backdrop-blur-lg">

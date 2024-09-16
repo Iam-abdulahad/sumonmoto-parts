@@ -53,7 +53,15 @@ const Products = () => {
     );
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 backdrop-blur-sm">
+      <div className="text-center my-8">
+        <h1 className="text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse drop-shadow-lg">
+          Welcome to Our Store
+        </h1>
+        <p className="text-lg sm:text-xl text-gray-500 mt-4">
+          Discover the latest products and deals just for you
+        </p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {data &&
           data.map((product, index) => (

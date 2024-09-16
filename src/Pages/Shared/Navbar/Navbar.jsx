@@ -31,12 +31,25 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleLogout = async () => {
-    await signOut(auth);
+  const handleLogout = () => {
+    
     Swal.fire({
-      icon: "success",
-      title: "Logged out",
-      text: "You have successfully logged out.",
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Log Out!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await signOut(auth);
+        Swal.fire({
+          title: "Log Out!",
+          text: "You're successfully Logged out.",
+          icon: "success"
+        });
+      }
     });
   };
 
