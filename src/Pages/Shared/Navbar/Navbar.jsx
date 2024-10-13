@@ -32,7 +32,6 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -40,14 +39,14 @@ const Navbar = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Log Out!"
+      confirmButtonText: "Yes, Log Out!",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await signOut(auth);
         Swal.fire({
           title: "Log Out!",
           text: "You're successfully Logged out.",
-          icon: "success"
+          icon: "success",
         });
       }
     });

@@ -4,7 +4,7 @@ import Footer from "../Pages/Shared/Footer/Footer";
 
 const Main = () => {
   return (
-    <div className="min-h-screen">
+    <div className="">
       <Navbar></Navbar>
       <div className="bg-custom-background bg-cover bg-center bg-fixed">
         <Outlet></Outlet>

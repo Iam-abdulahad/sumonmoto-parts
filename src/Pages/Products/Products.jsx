@@ -53,20 +53,36 @@ const Products = () => {
     );
 
   return (
-    <div className="container mx-auto px-4 backdrop-blur-sm">
-      <div className="text-center my-8">
-        <h1 className="text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse drop-shadow-lg">
-          Welcome to Our Store
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-500 mt-4">
-          Discover the latest products and deals just for you
-        </p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data &&
-          data.map((product, index) => (
-            <Product key={index} product={product} />
-          ))}
+    <div
+      className="rounded-lg shadow-lg bg-no-repeat bg-cover bg-center bg-fixed"
+      style={{
+        backgroundImage:
+          "url(https://img.freepik.com/free-vector/wave-gradient-blue-background-modern-design_343694-3806.jpg?t=st=1726540548~exp=1726544148~hmac=4872cd591e58c968c4387dbc1f8c5759b3523815eaa281ec5c7cfc73a3e83fb3&w=1380",
+      }}
+    >
+      <div className="container mx-auto px-4">
+        <div className="grid justify-items-center">
+          <div className="text-center my-4">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-pink-500 to-red-500 drop-shadow-lg">
+              Welcome to Our Store
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-100 mt-4">
+              Discover the latest products and deals just for you
+            </p>
+          </div>
+          <div className="pb-4">
+            <span className="inline-block w-40 h-1 bg-red-500 rounded-full"></span>
+            <span className="inline-block w-3 h-1 mx-1 bg-pink-500 rounded-full"></span>
+            <span className="inline-block w-1 h-1 bg-purple-500 rounded-full"></span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {data &&
+            data.map((product, index) => (
+              <Product key={index} product={product} />
+            ))}
+        </div>
       </div>
     </div>
   );

@@ -23,26 +23,43 @@ const GoogleLogin = () => {
           name: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
-          role:"user",
+          role: "user",
           facebookURL: "",
-          phone:"",
+          phone: "",
         }),
       });
 
-      const result = await response.json();
+      let result;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        throw new Error("Invalid JSON response from server.");
+      }
 
       if (response.ok) {
         Swal.fire({
-          title: "Success!",
-          text: "Signed in and user data saved successfully.",
+          title: result.message?.includes("created")
+            ? "Welcome!"
+            : "Welcome Back!",
+          text: result.message || "You have successfully signed in.",
           icon: "success",
           confirmButtonText: "OK",
         });
       } else {
-        throw new Error(result.message || "Failed to save user data");
+        // Handle specific server-side errors
+        throw new Error(result.message || "Failed to save user data.");
       }
     } catch (error) {
-      const errorMessage = error.message;
+      let errorMessage = "An unexpected error occurred.";
+
+      if (error instanceof SyntaxError) {
+        // JSON parsing error
+        errorMessage = "Received invalid data from the server.";
+      } else if (error.message) {
+        // Other errors with a message
+        errorMessage = error.message;
+      }
+
       Swal.fire({
         title: "Error!",
         text: `Error during sign-in: ${errorMessage}`,
