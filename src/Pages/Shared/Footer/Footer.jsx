@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="backdrop-blur-lg">
+    <div className="backdrop-blur-lg ">
       <footer className="footer container mx-auto p-10 bg-neutral text-neutral-content text-white">
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
           <nav>

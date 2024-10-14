@@ -49,7 +49,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen backdrop-blur-lg flex flex-col items-center p-4">
+    <div className="backdrop-blur-lg flex flex-col items-center p-4">
       {/* Header */}
       <div className="bg-white w-full max-w-4xl rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center">

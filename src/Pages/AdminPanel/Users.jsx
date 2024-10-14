@@ -31,7 +31,7 @@ const UsersPage = () => {
 
   return (
     <div
-      className="rounded-lg shadow-lg bg-no-repeat bg-cover bg-center bg-fixed"
+      className="bg-cover bg-center bg-fixed min-h-full "
       style={{
         backgroundImage:
           "url(https://img.freepik.com/free-vector/wave-gradient-blue-background-modern-design_343694-3806.jpg?t=st=1726540548~exp=1726544148~hmac=4872cd591e58c968c4387dbc1f8c5759b3523815eaa281ec5c7cfc73a3e83fb3&w=1380",
