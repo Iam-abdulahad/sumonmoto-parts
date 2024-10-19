@@ -85,6 +85,8 @@ const Product = ({ product }) => {
         >
           Close
         </button> */}
+
+        
       </Modal>
     </>
   );

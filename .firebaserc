@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "sumonmoto-parts"
-  }
+    "default": "sumonmoto-parts",
+    "y": "sumonmoto-parts"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
