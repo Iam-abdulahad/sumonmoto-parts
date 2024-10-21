@@ -10,6 +10,7 @@ export default {
       blur: {
         xs: '2px',
       },
+      scrollBehavior: ['smooth'],
     },
   },
   plugins: [],

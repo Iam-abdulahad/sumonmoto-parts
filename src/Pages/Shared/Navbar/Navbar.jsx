@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import app from "../../../Firebase/firebase.config";
+import { AuthContext } from "../../../Providers/AuthProviders";
 
 const auth = getAuth(app);
 
 const defaultAvatar =
-  "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"; // Update with the path to your default avatar
+  "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const {userData} = useContext(AuthContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -22,6 +24,7 @@ const Navbar = () => {
 
     return () => unsubscribe();
   }, []);
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -91,6 +94,18 @@ const Navbar = () => {
             >
               Portfolio
             </Link>
+            {userData && userData.role === "admin" ? (
+                          <Link
+                          to="/dashboard"
+                          className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                            "/dashboard"
+                          )}`}
+                        >
+                          Dashboard
+                        </Link>
+            ) : (
+              ""
+            )}
 
             {user ? (
               <div className="relative inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">

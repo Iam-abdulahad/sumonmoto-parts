@@ -9,6 +9,7 @@ import ProfilePage from "../Pages/UsersInfo/ProfilePage";
 import AddReview from "../Pages/Home/CustomerReview/AddReview";
 import MyOrders from "../Pages/UsersInfo/MyOrders";
 import UsersPage from "../Pages/AdminPanel/Users";
+import AdminDashboard from "../Pages/AdminPanel/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "/sign_up",
         element: <SignUp></SignUp>,
+      },
+      {
+        path: "dashboard",
+        element: <AdminDashboard></AdminDashboard>,
       },
       {
         path: "*",
