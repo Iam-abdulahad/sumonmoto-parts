@@ -1,4 +1,5 @@
 import React from "react";
+import UsersPage from "./Users";
 
 const AdminDashboard = () => {
   return (
@@ -89,8 +90,7 @@ const AdminDashboard = () => {
 
         {/* Manage Users */}
         <section id="users" className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">Manage Users</h2>
-          {/* Similar table structure for users */}
+          <UsersPage></UsersPage>
         </section>
 
         {/* Manage Products */}

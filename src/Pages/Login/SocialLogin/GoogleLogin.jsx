@@ -12,62 +12,60 @@ const GoogleLogin = () => {
       const userCredential = await signInWithGoogle();
       const user = userCredential.user;
 
-      // Send user data to your server
-      const response = await fetch("http://localhost:5000/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uid: user.uid,
-          name: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          role: "user",
-          facebookURL: "",
-          phone: "",
-        }),
-      });
+      // Check if the user already exists in the database
+      const checkResponse = await fetch(
+        `http://localhost:5000/user/${user.uid}`
+      );
+      if (checkResponse.ok) {
+        const existingUser = await checkResponse.json();
 
-      let result;
-      try {
-        result = await response.json();
-      } catch (parseError) {
-        throw new Error("Invalid JSON response from server.");
-      }
-
-      if (response.ok) {
+        // If user exists, show a welcome message
         Swal.fire({
-          title: result.message?.includes("created")
-            ? "Welcome!"
-            : "Welcome Back!",
-          text: result.message || "You have successfully signed in.",
+          title: "Welcome Back!",
+          text: "You have successfully signed in.",
           icon: "success",
           confirmButtonText: "OK",
         });
       } else {
-        // Handle specific server-side errors
-        throw new Error(result.message || "Failed to save user data.");
+        // If user doesn't exist, proceed with adding them to the database
+        const response = await fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            role: "user",
+            facebookURL: "",
+            phone: "",
+          }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          Swal.fire({
+            title: "Welcome!",
+            text: "You have successfully signed in.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          throw new Error(result.message || "Failed to save user data.");
+        }
       }
     } catch (error) {
-      let errorMessage = "An unexpected error occurred.";
-
-      if (error instanceof SyntaxError) {
-        // JSON parsing error
-        errorMessage = "Received invalid data from the server.";
-      } else if (error.message) {
-        // Other errors with a message
-        errorMessage = error.message;
-      }
-
       Swal.fire({
         title: "Error!",
-        text: `Error during sign-in: ${errorMessage}`,
+        text: `Error during sign-in: ${error.message}`,
         icon: "error",
         confirmButtonText: "OK",
       });
-      setError(errorMessage);
-      console.error("Error message:", errorMessage);
+      setError(error.message);
+      console.error("Error message:", error.message);
     }
   };
 

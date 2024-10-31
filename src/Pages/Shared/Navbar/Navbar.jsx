@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
@@ -14,8 +14,9 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const {userData} = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
   const location = useLocation();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -24,7 +25,6 @@ const Navbar = () => {
 
     return () => unsubscribe();
   }, []);
-
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -60,6 +60,20 @@ const Navbar = () => {
       ? "border-indigo-500 text-gray-900"
       : "border-transparent text-gray-500 hover:text-gray-700";
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -94,22 +108,25 @@ const Navbar = () => {
             >
               Portfolio
             </Link>
-            {userData && userData.role === "admin" ? (
-                          <Link
-                          to="/dashboard"
-                          className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                            "/dashboard"
-                          )}`}
-                        >
-                          Dashboard
-                        </Link>
+            {user && userData?.role === "admin" ? (
+              <Link
+                to="/dashboard"
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                  "/dashboard"
+                )}`}
+              >
+                Dashboard
+              </Link>
             ) : (
               ""
             )}
 
             {user ? (
               <div className="relative inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                <div className="relative flex items-center my-auto">
+                <div
+                  className="relative flex items-center my-auto"
+                  ref={dropdownRef}
+                >
                   <button
                     onClick={toggleDropdown}
                     className="flex items-center px-1 pt-1 text-sm font-medium focus:outline-none"
@@ -253,48 +270,63 @@ const Navbar = () => {
           >
             Portfolio
           </Link>
+          {user && userData?.role === "admin" ? (
+            <Link
+              to="/dashboard"
+              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
+                "/dashboard"
+              )}`}
+            >
+              Dashboard
+            </Link>
+          ) : (
+            ""
+          )}
+
           {user ? (
             <>
-              <button
-                onClick={toggleDropdown}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-                  "/dashboard"
-                )}`}
-              >
-                {user.displayName || user.email}
-              </button>
-              {isDropdownOpen && (
-                <div className="px-2 pt-2 pb-3 space-y-1">
-                  <Link
-                    to="/profile"
-                    className="block px-3 py-2 rounded-md text-base font-medium"
-                  >
-                    My Profile
-                  </Link>
+              <div ref={dropdownRef}>
+                <button
+                  onClick={toggleDropdown}
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
+                    "/dashboard"
+                  )}`}
+                >
+                  {user.displayName || user.email}
+                </button>
+                {isDropdownOpen && (
+                  <div className="px-2 pt-2 pb-3 space-y-1">
+                    <Link
+                      to="/profile"
+                      className="block px-3 py-2 rounded-md text-base font-medium"
+                    >
+                      My Profile
+                    </Link>
 
-                  <Link
-                    to="/orders"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    My Orders
-                  </Link>
+                    <Link
+                      to="/orders"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      My Orders
+                    </Link>
 
-                  <Link
-                    to="/add_review"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Add A Review
-                  </Link>
-                </div>
-              )}
-              <button
-                onClick={handleLogout}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-                  "/logout"
-                )}`}
-              >
-                Logout
-              </button>
+                    <Link
+                      to="/add_review"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Add A Review
+                    </Link>
+                  </div>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
+                    "/logout"
+                  )}`}
+                >
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <Link
