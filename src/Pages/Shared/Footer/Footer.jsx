@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
-    <div className="backdrop-blur-lg ">
-      <footer className="footer container mx-auto p-10 bg-neutral text-neutral-content text-white">
+    <div className="backdrop-blur-sm z-40">
+      <footer className="footer container mx-auto p-10 bg-neutral text-neutral-content text-white z-40">
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
           <nav>
             <h6 className="footer-title text-lg font-semibold mb-4">
@@ -76,21 +76,28 @@ const Footer = () => {
             </ul>
           </nav>
           <nav>
-            <h6 className="footer-title text-lg font-semibold mb-4">Legal</h6>
+            <h6 className="footer-title text-lg font-semibold mb-4">
+              Resources
+            </h6>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="link link-hover">
-                  Terms of use
+                  Blog
                 </a>
               </li>
               <li>
                 <a href="#" className="link link-hover">
-                  Privacy policy
+                  FAQ
                 </a>
               </li>
               <li>
                 <a href="#" className="link link-hover">
-                  Cookie policy
+                  Help Center
+                </a>
+              </li>
+              <li>
+                <a href="#" className="link link-hover">
+                  Community
                 </a>
               </li>
             </ul>

@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Product from "./Product";
@@ -8,8 +9,19 @@ const Products = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const token = Cookies.get("jwt_token"); // Get JWT from cookies
+    if (!token) {
+      setError("No authentication token found.");
+      setLoading(false);
+      return;
+    }
+
     axios
-      .get("http://localhost:5000/products")
+      .get("http://localhost:5000/products", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token in the header
+        },
+      })
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -48,7 +60,7 @@ const Products = () => {
   if (error)
     return (
       <p className="text-center mt-4 text-red-500">
-        Error loading data: {error.message}
+        Error loading data: {error.message || error}
       </p>
     );
 

@@ -1,7 +1,7 @@
 import { getAuth } from "firebase/auth";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import app from "../../../Firebase/firebase.config";
+import {app} from "../../../Firebase/firebase.config";
 
 const AddReview = () => {
   const [formData, setFormData] = useState({

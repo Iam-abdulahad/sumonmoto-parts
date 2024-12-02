@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import app from "../../../Firebase/firebase.config";
+import {app} from "../../../Firebase/firebase.config";
 import { AuthContext } from "../../../Providers/AuthProviders";
 
 const auth = getAuth(app);
@@ -123,10 +123,7 @@ const Navbar = () => {
 
             {user ? (
               <div className="relative inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                <div
-                  className="relative flex items-center my-auto"
-                  ref={dropdownRef}
-                >
+                <div className="relative flex items-center my-auto">
                   <button
                     onClick={toggleDropdown}
                     className="flex items-center px-1 pt-1 text-sm font-medium focus:outline-none"
@@ -141,7 +138,10 @@ const Navbar = () => {
                   </button>
 
                   {isDropdownOpen && (
-                    <div className="absolute left-0 top-full mt-2 w-44 bg-white rounded-lg shadow z-10">
+                    <div
+                      className="absolute left-0 top-full mt-2 w-44 bg-white rounded-lg shadow z-10"
+                      ref={dropdownRef}
+                    >
                       <ul
                         className="py-2 text-sm text-gray-700"
                         aria-labelledby="dropdownDefaultButton"

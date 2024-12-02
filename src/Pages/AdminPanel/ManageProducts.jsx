@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
@@ -11,25 +13,102 @@ const ManageProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("/api/products");
+      const response = await fetch("http://localhost:5000/products");
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
       const data = await response.json();
       setProducts(data);
     } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message,
+      });
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = (id) => {
-    // Implement delete logic
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`http://localhost:5000/products/${id}`, {
+            method: "DELETE",
+          });
+          if (!response.ok) {
+            throw new Error("Failed to delete product");
+          }
+          setProducts(products.filter((product) => product._id !== id));
+          Swal.fire("Deleted!", "The product has been deleted.", "success");
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.message,
+          });
+        }
+      }
+    });
   };
 
   const handleEdit = (id) => {
-    // Implement edit logic
+    Swal.fire({
+      title: "Edit Product",
+      html: `
+        <input id="name" class="swal2-input" placeholder="Name" />
+        <input id="price" class="swal2-input" placeholder="Price" type="number" />
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      preConfirm: () => {
+        const name = Swal.getPopup().querySelector("#name").value;
+        const price = Swal.getPopup().querySelector("#price").value;
+        if (!name || !price) {
+          Swal.showValidationMessage(`Please enter both name and price`);
+        }
+        return { name, price };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { name, price } = result.value;
+        try {
+          const response = await fetch(`http://localhost:5000/products/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, price }),
+          });
+          if (!response.ok) {
+            throw new Error("Failed to update product");
+          }
+          const updatedProduct = await response.json();
+          setProducts(
+            products.map((product) =>
+              product._id === id ? { ...product, ...updatedProduct } : product
+            )
+          );
+          Swal.fire("Updated!", "The product has been updated.", "success");
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.message,
+          });
+        }
+      }
+    });
   };
 
   return (
@@ -89,12 +168,12 @@ const ManageProducts = () => {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id} className="border-b">
+                <tr key={product._id} className="border-b text-center">
                   <td className="py-2 px-4 border-b">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="h-16 w-16 object-cover"
+                      className="h-16 w-16 object-cover rounded-lg"
                     />
                   </td>
                   <td className="py-2 px-4 border-b">{product.name}</td>
@@ -107,13 +186,13 @@ const ManageProducts = () => {
                   </td>
                   <td className="py-2 px-4 border-b">
                     <button
-                      onClick={() => handleEdit(product.id)}
+                      onClick={() => handleEdit(product._id)}
                       className="text-blue-500 hover:text-blue-700 mx-2"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(product._id)}
                       className="text-red-500 hover:text-red-700 mx-2"
                     >
                       Delete

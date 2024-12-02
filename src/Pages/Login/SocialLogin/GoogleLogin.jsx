@@ -16,17 +16,26 @@ const GoogleLogin = () => {
       const checkResponse = await fetch(
         `http://localhost:5000/user/${user.uid}`
       );
-      if (checkResponse.ok) {
-        const existingUser = await checkResponse.json();
 
-        // If user exists, show a welcome message
-        Swal.fire({
-          title: "Welcome Back!",
-          text: "You have successfully signed in.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
+      if (checkResponse.ok) {
+        const contentType = checkResponse.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const existingUser = await checkResponse.json();
+
+          Swal.fire({
+            title: "Welcome Back!",
+            text: "You have successfully signed in.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          throw new Error("Invalid response format: expected JSON.");
+        }
       } else {
+        console.error("Check response status:", checkResponse.status);
+        const text = await checkResponse.text();
+        console.error("Check response body:", text);
+
         // If user doesn't exist, proceed with adding them to the database
         const response = await fetch("http://localhost:5000/users", {
           method: "POST",

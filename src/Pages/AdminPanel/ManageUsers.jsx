@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
 
-const UsersPage = () => {
+const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   console.log(users);
@@ -18,7 +17,6 @@ const UsersPage = () => {
         setLoading(false);
       });
   }, []);
-
 
   const makeAdmin = (userId) => {
     console.log(`Making admin ${userId}`);
@@ -84,7 +82,7 @@ const UsersPage = () => {
                 <tr className="bg-blue-600 text-white text-left">
                   <th className="py-3 px-5 text-sm font-medium">Name</th>
                   <th className="py-3 px-5 text-sm font-medium">Email</th>
-                  <th className="py-3 px-5 text-sm font-medium">User's ID</th>
+                  <th className="py-3 px-5 text-sm font-medium">Users ID</th>
                   <th className="py-3 px-5 text-sm font-medium">Role</th>
                   <th className="py-3 px-5 text-sm font-medium text-center">
                     Actions
@@ -101,12 +99,14 @@ const UsersPage = () => {
                     </td>
                     <td className="py-4 px-5 text-gray-700">{user.role}</td>
                     <td className="py-4 px-5 text-center whitespace-nowrap">
-                      <button
-                        onClick={() => makeAdmin(user.uid)}
-                        className="bg-green-500 text-white py-1 px-3 rounded-full mr-2 hover:bg-green-600 transition duration-200"
-                      >
-                        Make Admin
-                      </button>
+                      {user.role !== "admin" && (
+                        <button
+                          onClick={() => makeAdmin(user.uid)}
+                          className="bg-green-500 text-white py-1 px-3 rounded-full mr-2 hover:bg-green-600 transition duration-200"
+                        >
+                          Make Admin
+                        </button>
+                      )}
                       <button
                         onClick={() => handleDeleteUser(user.uid)}
                         className="bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600 transition duration-200"
@@ -125,4 +125,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default ManageUsers;
