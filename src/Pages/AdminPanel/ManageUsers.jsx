@@ -1,35 +1,89 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(users);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/users")
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data);
+  const fetchUsers = () => {
+    setLoading(true); // Show spinner while fetching data
+    axios
+      .get("http://localhost:5000/users")
+      .then((response) => {
+        setUsers(response.data);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Failed to fetch users!",
+        });
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
-  const makeAdmin = (userId) => {
-    console.log(`Making admin ${userId}`);
-    // Add your logic here
+  const toggleAdminStatus = (userId) => {
+    axios
+      .put(`http://localhost:5000/users/${userId}`)
+      .then((response) => {
+        const updatedUser = response.data;
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: `User role updated to ${updatedUser.role}!`,
+        });
+        fetchUsers(); // Refetch users data after update
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to update user role!",
+        });
+      });
   };
+
   const handleDeleteUser = (userId) => {
-    console.log(`Deleting user ${userId}`);
-    // Add your logic here
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:5000/users/${userId}`)
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: "The user has been deleted.",
+            });
+            fetchUsers(); // Refetch users data after deletion
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Failed to delete user!",
+            });
+          });
+      }
+    });
   };
 
   return (
     <div
-      className="bg-cover bg-center bg-fixed min-h-full "
+      className="bg-cover bg-center bg-fixed min-h-full"
       style={{
         backgroundImage:
           "url(https://img.freepik.com/free-vector/wave-gradient-blue-background-modern-design_343694-3806.jpg?t=st=1726540548~exp=1726544148~hmac=4872cd591e58c968c4387dbc1f8c5759b3523815eaa281ec5c7cfc73a3e83fb3&w=1380",
@@ -82,7 +136,7 @@ const ManageUsers = () => {
                 <tr className="bg-blue-600 text-white text-left">
                   <th className="py-3 px-5 text-sm font-medium">Name</th>
                   <th className="py-3 px-5 text-sm font-medium">Email</th>
-                  <th className="py-3 px-5 text-sm font-medium">Users ID</th>
+                  <th className="py-3 px-5 text-sm font-medium">User ID</th>
                   <th className="py-3 px-5 text-sm font-medium">Role</th>
                   <th className="py-3 px-5 text-sm font-medium text-center">
                     Actions
@@ -99,14 +153,16 @@ const ManageUsers = () => {
                     </td>
                     <td className="py-4 px-5 text-gray-700">{user.role}</td>
                     <td className="py-4 px-5 text-center whitespace-nowrap">
-                      {user.role !== "admin" && (
-                        <button
-                          onClick={() => makeAdmin(user.uid)}
-                          className="bg-green-500 text-white py-1 px-3 rounded-full mr-2 hover:bg-green-600 transition duration-200"
-                        >
-                          Make Admin
-                        </button>
-                      )}
+                      <button
+                        onClick={() => toggleAdminStatus(user.uid)}
+                        className={`${
+                          user.role === "admin"
+                            ? "bg-orange-500 hover:bg-orange-600"
+                            : "bg-green-500 hover:bg-green-600"
+                        } text-white py-1 px-3 rounded-full mr-2 transition duration-200`}
+                      >
+                        {user.role === "admin" ? "Remove Admin" : "Make Admin"}
+                      </button>
                       <button
                         onClick={() => handleDeleteUser(user.uid)}
                         className="bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600 transition duration-200"

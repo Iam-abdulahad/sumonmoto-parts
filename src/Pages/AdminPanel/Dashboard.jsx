@@ -15,9 +15,9 @@ const AdminDashboard = () => {
   const isActiveRoute = (path) => location.pathname.includes(path);
 
   return (
-    <div className="flex-col md:flex-row bg-gray-100 min-h-screen">
+    <div className="flex flex-1 backdrop-blur-sm">
       {/* Sidebar */}
-      <aside className="h-screen w-full md:fixed md:top-0 md:left-0 md:w-64 bg-sky-500 text-white">
+      <aside className="w-full md:w-64 bg-sky-500 text-white">
         <div className="p-4 font-bold text-xl text-center md:text-left">
           Admin Dashboard
         </div>
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 p-4 md:ml-64">
+      <div className="flex-1 p-4">
         <header className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded shadow mb-6">
           <h1 className="text-xl md:text-2xl font-semibold">
             Dashboard Overview
@@ -76,8 +76,7 @@ const AdminDashboard = () => {
             </button>
           </div>
         </header>
-        {/* Nested Route Content */}
-        <Outlet /> {/* This will render nested routes here */}
+        <Outlet /> {/* Nested Routes */}
       </div>
     </div>
   );

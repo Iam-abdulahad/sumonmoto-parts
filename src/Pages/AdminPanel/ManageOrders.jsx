@@ -7,16 +7,16 @@ const ManageOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   // Fetch orders from the server
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:5000/orders"); // Replace with your API endpoint
-        setOrders(data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
+  const fetchOrders = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/orders"); // Replace with your API endpoint
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchOrders();
   }, []);
 
@@ -32,18 +32,12 @@ const ManageOrders = () => {
           { status: updatedStatus }
         );
         if (response.status === 200) {
-          setOrders((prevOrders) =>
-            prevOrders.map((order) =>
-              order.id === orderId ? { ...order, status: updatedStatus } : order
-            )
-          );
-
           Swal.fire(
             "Success",
             `Order status updated to ${updatedStatus}`,
             "success"
           );
-          window.location.reload();
+          fetchOrders(); // Refetch orders for UI update
         }
       }
     } catch (error) {
@@ -69,13 +63,8 @@ const ManageOrders = () => {
           `http://localhost:5000/orders/${orderId}`
         );
         if (response.status === 200) {
-          setOrders((prevOrders) =>
-            prevOrders.filter((order) => order.id !== orderId)
-          );
-
           Swal.fire("Deleted!", "Order has been deleted.", "success");
-
-          window.location.reload();
+          fetchOrders(); // Refetch orders for UI update
         }
       }
     } catch (error) {
@@ -126,7 +115,7 @@ const ManageOrders = () => {
           <tbody>
             {orders.map((order) => (
               <tr
-                key={order.orderId}
+                key={order._id}
                 onClick={() => setSelectedOrder(order)}
                 className="cursor-pointer hover:bg-gray-100"
               >
@@ -223,13 +212,13 @@ const ManageOrders = () => {
                 <strong>Customer Email:</strong> {selectedOrder.customerEmail}
               </p>
               <p>
-                <strong>Order Date:</strong> {selectedOrder.orderDate}
+                <strong>Order Date:</strong> {selectedOrder.orderTime}
               </p>
               <p>
                 <strong>Status:</strong> {selectedOrder.status}
               </p>
               <p>
-                <strong>Total Amount:</strong> {selectedOrder.totalAmount}
+                <strong>Total Amount:</strong> {selectedOrder.totalPrice}
               </p>
               <hr className="my-4" />
               <h3 className="text-lg font-semibold">Shipping Information</h3>
@@ -238,9 +227,7 @@ const ManageOrders = () => {
               </p>
               <hr className="my-4" />
               <h3 className="text-lg font-semibold">Contact Information</h3>
-              <p>
-                {selectedOrder.contactInfo}
-              </p>
+              <p>{selectedOrder.contactInfo}</p>
             </div>
             <button
               onClick={() => setSelectedOrder(null)}

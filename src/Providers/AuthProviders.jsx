@@ -87,17 +87,13 @@ const AuthProviders = ({ children }) => {
 
   // Fetch user data
   const fetchUserData = async (uid) => {
-    const token = Cookies.get("jwt_token");
-    if (!token) return;
-
     try {
-      const response = await axios.get(`http://localhost:5000/user/${uid}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(`http://localhost:5000/user/${uid}`);
       setUserData(response.data);
     } catch (error) {
-      if (error.response) {
-        console.error("Error response:", error.response);
+      if (error.response && error.response.status === 404) {
+        console.warn("User not found in the database.");
+        setUserData(null); // Clear user data if not found
       } else {
         console.error("Error fetching user data:", error.message);
       }

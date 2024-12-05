@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { GoogleAuthProvider } from "firebase/auth";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Providers/AuthProviders";
+import axios from "axios";
 
 const GoogleLogin = () => {
   const { signInWithGoogle, loading } = useContext(AuthContext);
@@ -12,69 +12,69 @@ const GoogleLogin = () => {
       const userCredential = await signInWithGoogle();
       const user = userCredential.user;
 
-      // Check if the user already exists in the database
-      const checkResponse = await fetch(
-        `http://localhost:5000/user/${user.uid}`
-      );
+      // Check if the user exists in the database
+      try {
+        const checkResponse = await axios.get(
+          `http://localhost:5000/user/${user.uid}`
+        );
 
-      if (checkResponse.ok) {
-        const contentType = checkResponse.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          const existingUser = await checkResponse.json();
-
+        if (checkResponse.status === 200) {
           Swal.fire({
             title: "Welcome Back!",
             text: "You have successfully signed in.",
             icon: "success",
             confirmButtonText: "OK",
           });
-        } else {
-          throw new Error("Invalid response format: expected JSON.");
         }
-      } else {
-        console.error("Check response status:", checkResponse.status);
-        const text = await checkResponse.text();
-        console.error("Check response body:", text);
+      } catch (checkError) {
+        if (checkError.response && checkError.response.status === 404) {
+          // User doesn't exist, add them to the database
+          try {
+            const response = await axios.post("http://localhost:5000/users", {
+              uid: user.uid,
+              name: user.displayName,
+              email: user.email,
+              photoURL: user.photoURL,
+              role: "user",
+              facebookURL: "",
+              phone: "",
+            });
 
-        // If user doesn't exist, proceed with adding them to the database
-        const response = await fetch("http://localhost:5000/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uid: user.uid,
-            name: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-            role: "user",
-            facebookURL: "",
-            phone: "",
-          }),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
+            if (response.status === 201) {
+              Swal.fire({
+                title: "Welcome!",
+                text: "You have successfully signed in.",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            }
+          } catch (addError) {
+            Swal.fire({
+              title: "Error!",
+              text: `Failed to save user: ${addError.message}`,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+            console.error("Add user error:", addError.message);
+          }
+        } else {
           Swal.fire({
-            title: "Welcome!",
-            text: "You have successfully signed in.",
-            icon: "success",
+            title: "Error!",
+            text: `Error during sign-in check: ${checkError.message}`,
+            icon: "error",
             confirmButtonText: "OK",
           });
-        } else {
-          throw new Error(result.message || "Failed to save user data.");
+          console.error("Sign-in check error:", checkError.message);
         }
       }
-    } catch (error) {
+    } catch (signInError) {
       Swal.fire({
         title: "Error!",
-        text: `Error during sign-in: ${error.message}`,
+        text: `Error during Google sign-in: ${signInError.message}`,
         icon: "error",
         confirmButtonText: "OK",
       });
-      setError(error.message);
-      console.error("Error message:", error.message);
+      console.error("Sign-in error:", signInError.message);
     }
   };
 

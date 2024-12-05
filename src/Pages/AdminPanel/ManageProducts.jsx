@@ -12,6 +12,7 @@ const ManageProducts = () => {
   }, []);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       const response = await fetch("http://localhost:5000/products");
       if (!response.ok) {
@@ -49,57 +50,8 @@ const ManageProducts = () => {
           if (!response.ok) {
             throw new Error("Failed to delete product");
           }
-          setProducts(products.filter((product) => product._id !== id));
           Swal.fire("Deleted!", "The product has been deleted.", "success");
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: error.message,
-          });
-        }
-      }
-    });
-  };
-
-  const handleEdit = (id) => {
-    Swal.fire({
-      title: "Edit Product",
-      html: `
-        <input id="name" class="swal2-input" placeholder="Name" />
-        <input id="price" class="swal2-input" placeholder="Price" type="number" />
-      `,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      preConfirm: () => {
-        const name = Swal.getPopup().querySelector("#name").value;
-        const price = Swal.getPopup().querySelector("#price").value;
-        if (!name || !price) {
-          Swal.showValidationMessage(`Please enter both name and price`);
-        }
-        return { name, price };
-      },
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const { name, price } = result.value;
-        try {
-          const response = await fetch(`http://localhost:5000/products/${id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ name, price }),
-          });
-          if (!response.ok) {
-            throw new Error("Failed to update product");
-          }
-          const updatedProduct = await response.json();
-          setProducts(
-            products.map((product) =>
-              product._id === id ? { ...product, ...updatedProduct } : product
-            )
-          );
-          Swal.fire("Updated!", "The product has been updated.", "success");
+          await fetchProducts(); // Refetch products after deletion
         } catch (error) {
           Swal.fire({
             icon: "error",
@@ -186,14 +138,8 @@ const ManageProducts = () => {
                   </td>
                   <td className="py-2 px-4 border-b">
                     <button
-                      onClick={() => handleEdit(product._id)}
-                      className="text-blue-500 hover:text-blue-700 mx-2"
-                    >
-                      Edit
-                    </button>
-                    <button
                       onClick={() => handleDelete(product._id)}
-                      className="text-red-500 hover:text-red-700 mx-2"
+                      className="bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600 transition duration-200"
                     >
                       Delete
                     </button>

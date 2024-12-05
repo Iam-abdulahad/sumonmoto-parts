@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../../Providers/AuthProviders";
 import ForgotPasswordModal from "./ForgotPasswordModal"; // Assuming you have this component
 import { sendPasswordResetEmail } from "firebase/auth";
+import axios from "axios"; // To make API calls
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
@@ -12,25 +13,17 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await signIn(email, password);
-      Swal.fire({
-        icon: "success",
-        title: "Logged In!",
-        text: "You have successfully logged in.",
-      });
-    } catch (error) {
+  // Function to handle password reset
+  const sendPasswordReset = async (email) => {
+    if (!email) {
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: error.message,
+        title: "Email Required",
+        text: "Please enter your email to reset the password.",
       });
+      return;
     }
-  };
 
-  const sendPasswordReset = async (email) => {
     try {
       await sendPasswordResetEmail(email);
       Swal.fire({
@@ -44,6 +37,81 @@ const Login = () => {
         title: "Error",
         text: error.message,
       });
+    }
+  };
+
+  // Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Perform sign-in with email and password
+      const userCredential = await signIn(email, password);
+      const user = userCredential.user;
+
+      // Check if the user exists in the database
+      try {
+        const checkResponse = await axios.get(
+          `http://localhost:5000/users/${user.uid}`
+        );
+
+        if (checkResponse.status === 200) {
+          Swal.fire({
+            title: "Welcome Back!",
+            text: "You have successfully logged in.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (checkError) {
+        if (checkError.response && checkError.response.status === 404) {
+          // User doesn't exist, add them to the database
+          try {
+            const response = await axios.post("http://localhost:5000/users", {
+              uid: user.uid,
+              name: user.displayName || "New User",
+              email: user.email,
+              photoURL: user.photoURL || "",
+              role: "user",
+              facebookURL: "",
+              phone: "",
+            });
+
+            if (response.status === 201) {
+              Swal.fire({
+                title: "Welcome!",
+                text: "You have successfully logged in, and your profile has been created.",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            }
+          } catch (addError) {
+            Swal.fire({
+              title: "Error!",
+              text: `Failed to save user: ${addError.message}`,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+            console.error("Add user error:", addError.message);
+          }
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: `Error during user check: ${checkError.message}`,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+          console.error("User check error:", checkError.message);
+        }
+      }
+    } catch (signInError) {
+      Swal.fire({
+        title: "Error!",
+        text: `Failed to log in: ${signInError.message}`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      console.error("Sign-in error:", signInError.message);
     }
   };
 
@@ -79,13 +147,13 @@ const Login = () => {
               >
                 Password
               </label>
-              <a
-                href="#"
+              <button
+                type="button"
                 className="text-xs text-gray-600 dark:text-gray-400 hover:underline"
                 onClick={() => setModalOpen(true)} // Open the modal
               >
                 Forget Password?
-              </a>
+              </button>
             </div>
 
             <input
@@ -109,17 +177,14 @@ const Login = () => {
 
         <div className="flex items-center justify-between mt-4">
           <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/5"></span>
-          <a
-            href="#"
-            className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
-          >
+          <p className="text-xs text-center text-gray-500 uppercase dark:text-gray-400">
             or login with Social Media
-          </a>
+          </p>
           <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/5"></span>
         </div>
 
         <div className="flex items-center mt-6 -mx-2">
-          <GoogleLogin></GoogleLogin>
+          <GoogleLogin />
         </div>
 
         <p className="mt-8 text-xs font-light text-center text-gray-400">

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleLogin from "../SocialLogin/GoogleLogin";
 import Swal from "sweetalert2";
+import axios from "axios";
 import { AuthContext } from "../../../Providers/AuthProviders";
 
 const SignUp = () => {
@@ -22,42 +23,40 @@ const SignUp = () => {
         uid: user.uid,
         name,
         email,
+        photoURL:"",
         role: "user",
         facebookURL: "",
         phone: "",
       };
 
-      // Send the user data to your server
-      const response = await fetch("http://localhost:5000/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+      // Send the user data to your server using Axios
+      const response = await axios.post("http://localhost:5000/users", userData);
 
-      if (response.ok) {
+      if (response.status === 200 || response.status === 201) {
         // Successfully saved to the server
         Swal.fire({
           icon: "success",
           title: "Account Created!",
-          text: "Verification email sent. Please check your inbox.",
-        });
-      } else {
-        // Handle errors if saving to server failed
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Failed to save user data to the server.",
+          text: "Verification email has been sent. Please check your inbox.",
         });
       }
     } catch (error) {
-      // Handle errors during Firebase authentication
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error.message,
-      });
+      // Handle errors
+      if (error.response && error.response.data) {
+        // Errors returned from the server
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response.data.message || "Failed to save user data to the server.",
+        });
+      } else {
+        // Other errors (e.g., network issues or Firebase errors)
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.message || "Something went wrong!",
+        });
+      }
     }
   };
 
