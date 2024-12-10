@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Product from "./Product";
@@ -9,19 +8,8 @@ const Products = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = Cookies.get("jwt_token"); // Get JWT from cookies
-    if (!token) {
-      setError("No authentication token found.");
-      setLoading(false);
-      return;
-    }
-
     axios
-      .get("http://localhost:5000/products", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Send token in the header
-        },
-      })
+      .get("https://sumonmoto-parts-server.onrender.com/products")
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -66,7 +54,7 @@ const Products = () => {
 
   return (
     <div
-      className="rounded-lg shadow-lg bg-no-repeat bg-cover bg-center bg-fixed"
+      className="shadow-lg bg-no-repeat bg-cover bg-center bg-fixed pb-10"
       style={{
         backgroundImage:
           "url(https://img.freepik.com/free-vector/wave-gradient-blue-background-modern-design_343694-3806.jpg?t=st=1726540548~exp=1726544148~hmac=4872cd591e58c968c4387dbc1f8c5759b3523815eaa281ec5c7cfc73a3e83fb3&w=1380",

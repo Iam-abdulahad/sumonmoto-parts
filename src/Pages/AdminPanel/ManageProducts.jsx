@@ -6,6 +6,8 @@ const ManageProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [visibleInput, setVisibleInput] = useState(null);
+  const [quantityInputs, setQuantityInputs] = useState({});
 
   useEffect(() => {
     fetchProducts();
@@ -14,7 +16,7 @@ const ManageProducts = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/products");
+      const response = await fetch("https://sumonmoto-parts-server.onrender.com/products");
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
@@ -32,6 +34,50 @@ const ManageProducts = () => {
     }
   };
 
+  const handleQuantityChange = (id, value) => {
+    setQuantityInputs((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleAddQuantity = async (id) => {
+    const quantityToAdd = parseInt(quantityInputs[id], 10);
+
+    if (isNaN(quantityToAdd) || quantityToAdd <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Quantity",
+        text: "Please enter a valid positive number.",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://sumonmoto-parts-server.onrender.com/products/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity: quantityToAdd, action: "add" }),
+      });
+
+      const data = await response.json();
+      Swal.fire("Success", data.message, "success");
+      await fetchProducts(); // Refresh products
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message,
+      });
+    }
+  };
+
+  const toggleInputVisibility = (id) => {
+    setVisibleInput((prev) => (prev === id ? null : id));
+  };
+
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -44,7 +90,7 @@ const ManageProducts = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetch(`http://localhost:5000/products/${id}`, {
+          const response = await fetch(`https://sumonmoto-parts-server.onrender.com/products/${id}`, {
             method: "DELETE",
           });
           if (!response.ok) {
@@ -67,7 +113,6 @@ const ManageProducts = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Manage Products</h1>
 
-      {/* Loading State */}
       {loading && (
         <div className="flex justify-center items-center h-64">
           <svg
@@ -93,7 +138,6 @@ const ManageProducts = () => {
         </div>
       )}
 
-      {/* Error Message */}
       {error && (
         <div
           className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4"
@@ -104,7 +148,6 @@ const ManageProducts = () => {
         </div>
       )}
 
-      {/* Products Table */}
       {!loading && !error && (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
@@ -136,7 +179,34 @@ const ManageProducts = () => {
                   <td className="py-2 px-4 border-b">
                     {product.minimum_order_quantity}
                   </td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border-b space-y-2">
+                    {visibleInput === product._id ? (
+                      <>
+                        <input
+                          type="number"
+                          min="1"
+                          value={quantityInputs[product._id] || ""}
+                          onChange={(e) =>
+                            handleQuantityChange(product._id, e.target.value)
+                          }
+                          placeholder="Add Quantity"
+                          className="border border-gray-300 p-1 rounded w-20 text-center"
+                        />
+                        <button
+                          onClick={() => handleAddQuantity(product._id)}
+                          className="bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600 transition duration-200"
+                        >
+                          Confirm
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => toggleInputVisibility(product._id)}
+                        className="bg-blue-500 text-white py-1 px-3 rounded-full hover:bg-blue-600 transition duration-200"
+                      >
+                        Add Quantity
+                      </button>
+                    )}
                     <button
                       onClick={() => handleDelete(product._id)}
                       className="bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600 transition duration-200"

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "../SocialLogin/GoogleLogin";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -10,6 +10,10 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,14 +27,17 @@ const SignUp = () => {
         uid: user.uid,
         name,
         email,
-        photoURL:"",
+        photoURL: user.photoURL || "https://via.placeholder.com/150",
         role: "user",
-        facebookURL: "",
+        socialAccount: "",
         phone: "",
       };
 
       // Send the user data to your server using Axios
-      const response = await axios.post("http://localhost:5000/users", userData);
+      const response = await axios.post(
+        "https://sumonmoto-parts-server.onrender.com/users",
+        userData
+      );
 
       if (response.status === 200 || response.status === 201) {
         // Successfully saved to the server
@@ -39,6 +46,7 @@ const SignUp = () => {
           title: "Account Created!",
           text: "Verification email has been sent. Please check your inbox.",
         });
+        navigate(from, { replace: true });
       }
     } catch (error) {
       // Handle errors
@@ -47,7 +55,9 @@ const SignUp = () => {
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: error.response.data.message || "Failed to save user data to the server.",
+          text:
+            error.response.data.message ||
+            "Failed to save user data to the server.",
         });
       } else {
         // Other errors (e.g., network issues or Firebase errors)

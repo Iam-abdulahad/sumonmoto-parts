@@ -48,7 +48,7 @@ const MakeOrder = () => {
     const fetchProductData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/make_order/${productId}`
+          `https://sumonmoto-parts-server.onrender.com/make_order/${productId}`
         );
         setProductData(response.data);
         setOrderQuantity(response.data.minimum_order_quantity || 1);
@@ -75,7 +75,7 @@ const MakeOrder = () => {
 
     const totalPrice = productData.price * orderQuantity;
 
-    // Generate a unique order ID (numeric)
+    // Generate a unique order ID
     const generateOrderId = () => {
       const timestamp = Date.now(); // Current timestamp
       const randomPart = Math.floor(1000 + Math.random() * 9000); // Random 4-digit number
@@ -100,7 +100,13 @@ const MakeOrder = () => {
 
     try {
       // Send the order data to the server
-      await axios.post("http://localhost:5000/orders", orderData);
+      await axios.post("https://sumonmoto-parts-server.onrender.com/orders", orderData);
+
+      // Deduct the ordered quantity from the available stock
+      await axios.patch(`https://sumonmoto-parts-server.onrender.com/products/${productId}`, {
+        quantity: orderQuantity,
+        action: "deduct", // Specify the action
+      });
 
       // Show success message and navigate after user acknowledges
       Swal.fire({
@@ -108,13 +114,10 @@ const MakeOrder = () => {
         title: "Order Confirmed",
         text: "Your order has been placed successfully!",
       }).then(() => {
-        // Reset the form inputs
-        setOrderQuantity(productData.minimum_order_quantity);
+        setOrderQuantity(productData.minimum_order_quantity); // Reset form
         setShippingInfo("");
         setContactInfo("");
-
-        // Redirect to the orders page
-        navigate("/orders");
+        navigate("/orders"); // Redirect to the orders page
       });
     } catch (error) {
       console.error("Error placing the order:", error);
@@ -191,6 +194,10 @@ const MakeOrder = () => {
             <p className="text-gray-600">
               <span className="font-medium">Minimum Order Quantity:</span>{" "}
               {productData.minimum_order_quantity}
+            </p>
+            <p className="text-gray-600">
+              <span className="font-medium">Available Quantity:</span>{" "}
+              {productData.available_quantity}
             </p>
           </div>
         </div>

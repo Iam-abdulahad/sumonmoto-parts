@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import {app} from "../../../Firebase/firebase.config";
+import { app } from "../../../Firebase/firebase.config";
 import { AuthContext } from "../../../Providers/AuthProviders";
 
 const auth = getAuth(app);
@@ -101,16 +101,24 @@ const Navbar = () => {
               Products
             </Link>
             <Link
-              to="/portfolio"
+              to="/about"
               className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                "/portfolio"
+                "/about"
               )}`}
             >
-              Portfolio
+              About
+            </Link>
+            <Link
+              to="/contact"
+              className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                "/contact"
+              )}`}
+            >
+              Contact
             </Link>
             {user && userData?.role === "admin" ? (
               <Link
-                to="/dashboard"
+                to="/dashboard/manage_users"
                 className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
                   "/dashboard"
                 )}`}
@@ -263,16 +271,24 @@ const Navbar = () => {
             Products
           </Link>
           <Link
-            to="/portfolio"
+            to="/about"
             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-              "/portfolio"
+              "/about"
             )}`}
           >
-            Portfolio
+            About
+          </Link>
+          <Link
+            to="/contact"
+            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
+              "/contact"
+            )}`}
+          >
+            Contact
           </Link>
           {user && userData?.role === "admin" ? (
             <Link
-              to="/dashboard"
+              to="/dashboard/manage_users"
               className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
                 "/dashboard"
               )}`}
@@ -285,7 +301,7 @@ const Navbar = () => {
 
           {user ? (
             <>
-              <div ref={dropdownRef}>
+              <div>
                 <button
                   onClick={toggleDropdown}
                   className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
@@ -294,7 +310,7 @@ const Navbar = () => {
                 >
                   {user.displayName || user.email}
                 </button>
-                {isDropdownOpen && (
+                {
                   <div className="px-2 pt-2 pb-3 space-y-1">
                     <Link
                       to="/profile"
@@ -317,7 +333,7 @@ const Navbar = () => {
                       Add A Review
                     </Link>
                   </div>
-                )}
+                }
                 <button
                   onClick={handleLogout}
                   className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(

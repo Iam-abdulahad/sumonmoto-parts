@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "../SocialLogin/GoogleLogin";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Providers/AuthProviders";
@@ -12,6 +12,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   // Function to handle password reset
   const sendPasswordReset = async (email) => {
@@ -45,14 +49,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Perform sign-in with email and password
       const userCredential = await signIn(email, password);
       const user = userCredential.user;
 
-      // Check if the user exists in the database
+      console.log("Authenticated User:", user);
+      console.log("Checking if user exists in the database...");
+
       try {
         const checkResponse = await axios.get(
-          `http://localhost:5000/users/${user.uid}`
+          `https://sumonmoto-parts-server.onrender.com/users/${user.uid}`
         );
 
         if (checkResponse.status === 200) {
@@ -62,56 +67,49 @@ const Login = () => {
             icon: "success",
             confirmButtonText: "OK",
           });
+          console.log("Navigating to:", from);
+          
         }
       } catch (checkError) {
-        if (checkError.response && checkError.response.status === 404) {
-          // User doesn't exist, add them to the database
-          try {
-            const response = await axios.post("http://localhost:5000/users", {
+        console.error(
+          "User check error:",
+          checkError.response?.data || checkError.message
+        );
+
+        if (checkError.response?.status === 404) {
+          console.log("User not found, adding to database...");
+          const response = await axios.post(
+            "https://sumonmoto-parts-server.onrender.com/users",
+            {
               uid: user.uid,
               name: user.displayName || "New User",
               email: user.email,
-              photoURL: user.photoURL || "",
+              photoURL: user.photoURL || "https://via.placeholder.com/150",
               role: "user",
-              facebookURL: "",
+              socialAccount: "",
               phone: "",
-            });
-
-            if (response.status === 201) {
-              Swal.fire({
-                title: "Welcome!",
-                text: "You have successfully logged in, and your profile has been created.",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
             }
-          } catch (addError) {
+          );
+
+          if (response.status === 201) {
             Swal.fire({
-              title: "Error!",
-              text: `Failed to save user: ${addError.message}`,
-              icon: "error",
+              title: "Welcome!",
+              text: "You have successfully logged in, and your profile has been created.",
+              icon: "success",
               confirmButtonText: "OK",
             });
-            console.error("Add user error:", addError.message);
+            navigate(from, { replace: true });
           }
-        } else {
-          Swal.fire({
-            title: "Error!",
-            text: `Error during user check: ${checkError.message}`,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-          console.error("User check error:", checkError.message);
         }
       }
     } catch (signInError) {
+      console.error("Sign-in error:", signInError.message);
       Swal.fire({
         title: "Error!",
         text: `Failed to log in: ${signInError.message}`,
         icon: "error",
         confirmButtonText: "OK",
       });
-      console.error("Sign-in error:", signInError.message);
     }
   };
 

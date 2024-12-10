@@ -15,6 +15,9 @@ import ManageOrders from "../Pages/AdminPanel/ManageOrders";
 import ManageProducts from "../Pages/AdminPanel/ManageProducts";
 import AddProduct from "../Pages/AdminPanel/AddProduct";
 import ManageUsers from "../Pages/AdminPanel/ManageUsers";
+import UsersRoute from "./UsersRoute";
+import Contact from "../Pages/Contact/Contact";
+import CompanyOverview from "../Pages/Home/CompanyOverview/CompanyOverview";
 
 export const router = createBrowserRouter([
   {
@@ -30,24 +33,44 @@ export const router = createBrowserRouter([
         element: <Products></Products>,
       },
       {
-        path: "/make_order/:productId",
-        element: <MakeOrder />,
+        path: "/about",
+        element: <CompanyOverview></CompanyOverview>,
       },
       {
-        path: "/portfolio",
-        element: <ManageUsers></ManageUsers>,
+        path: "/contact",
+        element: <Contact></Contact>,
+      },
+      {
+        path: "/make_order/:productId",
+        element: (
+          <UsersRoute>
+            <MakeOrder />
+          </UsersRoute>
+        ),
       },
       {
         path: "/profile",
-        element: <ProfilePage></ProfilePage>,
+        element: (
+          <UsersRoute>
+            <ProfilePage></ProfilePage>
+          </UsersRoute>
+        ),
       },
       {
         path: "/orders",
-        element: <MyOrders></MyOrders>,
+        element: (
+          <UsersRoute>
+            <MyOrders></MyOrders>
+          </UsersRoute>
+        ),
       },
       {
         path: "/add_review",
-        element: <AddReview></AddReview>,
+        element: (
+          <UsersRoute>
+            <AddReview></AddReview>
+          </UsersRoute>
+        ),
       },
       {
         path: "/login",
@@ -71,7 +94,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "manage_users",
-            element: <ManageUsers></ManageUsers> ,
+            element: <ManageUsers></ManageUsers>,
           },
           {
             path: "manage_products",

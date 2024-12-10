@@ -1,7 +1,8 @@
 import { getAuth } from "firebase/auth";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import {app} from "../../../Firebase/firebase.config";
+import axios from "axios";
+import { app } from "../../../Firebase/firebase.config";
 
 const AddReview = () => {
   const [formData, setFormData] = useState({
@@ -36,45 +37,56 @@ const AddReview = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/reviews", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axios.post(
+        "https://sumonmoto-parts-server.onrender.com/reviews",
+        formData
+      );
 
-      if (!response.ok) {
-        throw new Error("Failed to submit review");
+      if (response.status === 201 || response.status === 200) {
+        // Show success message
+        Swal.fire({
+          icon: "success",
+          title: "Review Submitted!",
+          text: "Thank you for your feedback.",
+        });
+
+        // Optionally reset form
+        setFormData({
+          name: formData.name,
+          email: formData.email,
+          rating: "",
+          review: "",
+          photoURL: formData.photoURL,
+        });
+      } else {
+        throw new Error("Unexpected response from the server");
+      }
+    } catch (error) {
+      // Handle errors
+      let errorMessage = "Something went wrong. Please try again later.";
+
+      if (error.response) {
+        // Server responded with a status code outside the range of 2xx
+        errorMessage = error.response.data.message || error.response.statusText;
+      } else if (error.request) {
+        // Request was made but no response received
+        errorMessage =
+          "No response from the server. Please check your connection.";
+      } else {
+        // Something happened in setting up the request
+        errorMessage = error.message;
       }
 
-      // Show success message
-      Swal.fire({
-        icon: "success",
-        title: "Review Submitted!",
-        text: "Thank you for your feedback.",
-      });
-
-      // Optionally reset form
-      setFormData({
-        name: formData.name,
-        email: formData.email,
-        rating: "",
-        review: "",
-        photoURL: formData.photoURL,
-      });
-    } catch (error) {
-      // Show error message
       Swal.fire({
         icon: "error",
         title: "Submission Failed",
-        text: error.message,
+        text: errorMessage,
       });
     }
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center backdrop-blur-sm">
       <div className="max-w-lg w-full p-6 mx-4 my-10 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-sky-600 text-center">
           Add a Review

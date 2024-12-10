@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   const isActiveRoute = (path) => location.pathname.includes(path);
 
   return (
-    <div className="flex flex-1 backdrop-blur-sm">
+    <div className="flex flex-1 backdrop-blur-sm bg-cover">
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-sky-500 text-white">
         <div className="p-4 font-bold text-xl text-center md:text-left">
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-4 min-h-screen bg-cover">
         <header className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded shadow mb-6">
           <h1 className="text-xl md:text-2xl font-semibold">
             Dashboard Overview

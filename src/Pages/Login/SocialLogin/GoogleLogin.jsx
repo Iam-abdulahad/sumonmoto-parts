@@ -2,10 +2,15 @@ import { useContext, useState } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Providers/AuthProviders";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const GoogleLogin = () => {
   const { signInWithGoogle, loading } = useContext(AuthContext);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleGoogleSignIn = async () => {
     try {
@@ -15,7 +20,7 @@ const GoogleLogin = () => {
       // Check if the user exists in the database
       try {
         const checkResponse = await axios.get(
-          `http://localhost:5000/user/${user.uid}`
+          `https://sumonmoto-parts-server.onrender.com/user/${user.uid}`
         );
 
         if (checkResponse.status === 200) {
@@ -25,20 +30,24 @@ const GoogleLogin = () => {
             icon: "success",
             confirmButtonText: "OK",
           });
+          navigate(from, { replace: true });
         }
       } catch (checkError) {
         if (checkError.response && checkError.response.status === 404) {
           // User doesn't exist, add them to the database
           try {
-            const response = await axios.post("http://localhost:5000/users", {
-              uid: user.uid,
-              name: user.displayName,
-              email: user.email,
-              photoURL: user.photoURL,
-              role: "user",
-              facebookURL: "",
-              phone: "",
-            });
+            const response = await axios.post(
+              "https://sumonmoto-parts-server.onrender.com/users",
+              {
+                uid: user.uid,
+                name: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL || "https://via.placeholder.com/150",
+                role: "user",
+                socialAccount: "",
+                phone: "",
+              }
+            );
 
             if (response.status === 201) {
               Swal.fire({

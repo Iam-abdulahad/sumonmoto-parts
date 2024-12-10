@@ -88,7 +88,7 @@ const AuthProviders = ({ children }) => {
   // Fetch user data
   const fetchUserData = async (uid) => {
     try {
-      const response = await axios.get(`http://localhost:5000/user/${uid}`);
+      const response = await axios.get(`https://sumonmoto-parts-server.onrender.com/user/${uid}`);
       setUserData(response.data);
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -104,7 +104,7 @@ const AuthProviders = ({ children }) => {
   const fetchProductDetails = async (productId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/make_order/${productId}`
+        `https://sumonmoto-parts-server.onrender.com/make_order/${productId}`
       );
       setProductData(response.data);
     } catch (error) {

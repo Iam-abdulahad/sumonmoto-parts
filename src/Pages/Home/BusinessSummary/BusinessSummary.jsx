@@ -14,10 +14,10 @@ const BusinessSummary = () => {
       className="rounded-lg shadow-lg bg-no-repeat bg-cover bg-center bg-fixed"
       style={{
         backgroundImage:
-          "url(https://images.pexels.com/photos/1023952/pexels-photo-1023952.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "url(https://img.freepik.com/free-vector/colored-political-world-map_23-2148319222.jpg?t=st=1733581868~exp=1733585468~hmac=1adb40a71288d4a9d29acdd86e681d614dffe1006f7e8ba7b2dcdc5d449e35ce&w=1380",
       }}
     >
-      <div className="p-8 backdrop-blur-lg">
+      <div className="p-8">
         <div className="grid justify-items-center">
           <div className="text-center title1">
             <span className="py-8 font-poppins font-semibold text-5xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
@@ -32,15 +32,15 @@ const BusinessSummary = () => {
           </div>
         </div>
 
-        <div className="py-8 flex flex-wrap justify-around">
-          <div className="summary-item flex flex-col items-center m-4">
+        <div className="py-8 flex flex-wrap justify-around ">
+          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
             <FaUsers className="text-blue-500 text-6xl mb-2" />
             <h3 className="text-2xl font-semibold">
               {inView ? <CountUp end={100} duration={3} /> : "0"}+
             </h3>
             <p className="text-gray-600">Customers Served</p>
           </div>
-          <div className="summary-item flex flex-col items-center m-4">
+          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
             <FaDollarSign className="text-green-500 text-6xl mb-2" />
             <h3 className="text-2xl font-semibold">
               {inView ? (
@@ -51,14 +51,14 @@ const BusinessSummary = () => {
             </h3>
             <p className="text-gray-600">Annual Revenue</p>
           </div>
-          <div className="summary-item flex flex-col items-center m-4">
+          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
             <FaStar className="text-yellow-500 text-6xl mb-2" />
             <h3 className="text-2xl font-semibold">
               {inView ? <CountUp end={33000} duration={3} /> : "0"}+
             </h3>
             <p className="text-gray-600">Reviews</p>
           </div>
-          <div className="summary-item flex flex-col items-center m-4">
+          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
             <FaTools className="text-red-500 text-6xl mb-2" />
             <h3 className="text-2xl font-semibold">
               {inView ? <CountUp end={50} duration={3} /> : "0"}+
@@ -73,7 +73,7 @@ const BusinessSummary = () => {
               Have any questions about us or get a product request?
             </h3>
             <p className="text-sm md:text-base lg:text-lg">
-              Don't hesitate to contact us
+              Do not hesitate to contact us
             </p>
           </div>
           <div className="flex flex-col md:flex-row w-full md:w-1/2 space-y-4 md:space-y-0 md:space-x-4">

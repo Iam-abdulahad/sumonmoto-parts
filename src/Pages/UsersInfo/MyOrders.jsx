@@ -24,7 +24,7 @@ const MyOrders = () => {
       if (!user) return;
 
       try {
-        const response = await axios.get("http://localhost:5000/orders");
+        const response = await axios.get("https://sumonmoto-parts-server.onrender.com/orders");
         const userOrders = response.data
           .filter((order) => order.customerEmail === user.email) // Filter by logged-in user's email
           .map((order, index) => ({

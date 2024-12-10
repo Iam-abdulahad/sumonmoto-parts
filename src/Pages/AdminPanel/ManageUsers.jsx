@@ -9,7 +9,7 @@ const ManageUsers = () => {
   const fetchUsers = () => {
     setLoading(true); // Show spinner while fetching data
     axios
-      .get("http://localhost:5000/users")
+      .get("https://sumonmoto-parts-server.onrender.com/users")
       .then((response) => {
         setUsers(response.data);
         setLoading(false);
@@ -30,7 +30,9 @@ const ManageUsers = () => {
 
   const toggleAdminStatus = (userId) => {
     axios
-      .put(`http://localhost:5000/users/${userId}`)
+      .put(`https://sumonmoto-parts-server.onrender.com/users/${userId}`, {
+        toggleRole: true,
+      }) // Send a flag to toggle the role
       .then((response) => {
         const updatedUser = response.data;
         Swal.fire({
@@ -40,7 +42,8 @@ const ManageUsers = () => {
         });
         fetchUsers(); // Refetch users data after update
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Error toggling user role:", error);
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -61,7 +64,7 @@ const ManageUsers = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/users/${userId}`)
+          .delete(`https://sumonmoto-parts-server.onrender.com/users/${userId}`)
           .then(() => {
             Swal.fire({
               icon: "success",
@@ -82,20 +85,14 @@ const ManageUsers = () => {
   };
 
   return (
-    <div
-      className="bg-cover bg-center bg-fixed min-h-full"
-      style={{
-        backgroundImage:
-          "url(https://img.freepik.com/free-vector/wave-gradient-blue-background-modern-design_343694-3806.jpg?t=st=1726540548~exp=1726544148~hmac=4872cd591e58c968c4387dbc1f8c5759b3523815eaa281ec5c7cfc73a3e83fb3&w=1380",
-      }}
-    >
+    <div className="container mx-auto p-4 ">
       <div className="container mx-auto p-4">
         <div className="grid justify-items-center">
           <div className="text-center my-4">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-pink-500 to-red-500 drop-shadow-lg">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-600 drop-shadow-lg">
               Manage Users
             </h1>
-            <p className="text-lg sm:text-xl text-gray-100 mt-4">
+            <p className="text-lg sm:text-xl mt-4 text-gray-700">
               Delete user or give them Admin access!
             </p>
           </div>

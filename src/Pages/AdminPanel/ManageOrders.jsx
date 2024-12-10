@@ -9,7 +9,7 @@ const ManageOrders = () => {
   // Fetch orders from the server
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/orders"); // Replace with your API endpoint
+      const { data } = await axios.get("https://sumonmoto-parts-server.onrender.com/orders"); // Replace with your API endpoint
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -28,7 +28,7 @@ const ManageOrders = () => {
 
       if (updatedStatus) {
         const response = await axios.put(
-          `http://localhost:5000/orders/${orderId}`,
+          `https://sumonmoto-parts-server.onrender.com/orders/${orderId}`,
           { status: updatedStatus }
         );
         if (response.status === 200) {
@@ -60,7 +60,7 @@ const ManageOrders = () => {
 
       if (result.isConfirmed) {
         const response = await axios.delete(
-          `http://localhost:5000/orders/${orderId}`
+          `https://sumonmoto-parts-server.onrender.com/orders/${orderId}`
         );
         if (response.status === 200) {
           Swal.fire("Deleted!", "Order has been deleted.", "success");
@@ -77,7 +77,7 @@ const ManageOrders = () => {
     <div className="container mx-auto p-4">
       <div className="grid justify-items-center">
         <div className="text-center my-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-pink-500 to-red-500 drop-shadow-lg">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-700">
             Manage Orders
           </h1>
         </div>

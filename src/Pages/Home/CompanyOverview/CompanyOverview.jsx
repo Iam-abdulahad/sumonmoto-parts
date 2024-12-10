@@ -1,9 +1,19 @@
+import { motion } from "framer-motion"; // Animation library
+
 const CompanyOverview = () => {
   return (
-    <section className="">
+    <section className="relative">
       <div className="text-gray-800 py-20 backdrop-blur-lg">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <h2 className="text-5xl font-extrabold mb-10 text-black">About Us</h2>
+          <motion.img
+            src="https://img.freepik.com/free-vector/illustration-with-business-people-design_23-2148468477.jpg?t=st=1733583642~exp=1733587242~hmac=a41d48a0fd685bd935cfdc3eb9d881e305449ef314500a3be310174af00ebbe1&w=1380" // Replace with your image path
+            alt="Animated Motor Parts"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="mx-auto w-full max-w-lg mb-10 rounded-lg shadow-lg"
+          />
           <p className="text-xl mb-8 max-w-3xl mx-auto">
             Welcome to{" "}
             <span className="font-semibold text-yellow-300">

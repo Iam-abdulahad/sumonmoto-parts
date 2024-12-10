@@ -1,4 +1,3 @@
-// src/pages/AddProduct.js
 import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -7,8 +6,8 @@ const AddProduct = () => {
   const [productData, setProductData] = useState({
     name: "",
     price: "",
-    available_available_quantity: "",
-    minimum_order_available_available_quantity: "",
+    available_quantity: "",
+    minimum_order_quantity: "",
     description: "",
     image: "",
   });
@@ -22,7 +21,7 @@ const AddProduct = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/products",
+        "https://sumonmoto-parts-server.onrender.com/products",
         productData
       );
 
@@ -37,8 +36,8 @@ const AddProduct = () => {
         setProductData({
           name: "",
           price: "",
-          available_available_quantity: "",
-          minimum_order_available_available_quantity: "",
+          available_quantity: "",
+          minimum_order_quantity: "",
           description: "",
           image: "",
         });
@@ -56,10 +55,10 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="flex justify-center bg-gray-100 p-4 min-h-screen">
+    <div className="flex justify-center p-4 sm:p-6 md:p-8 lg:p-10">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg bg-white shadow-md rounded-lg p-8 space-y-4"
+        className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-white shadow-md rounded-lg p-6 md:p-8 space-y-4"
       >
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
           Add New Product
@@ -166,7 +165,7 @@ const AddProduct = () => {
             type="url"
             name="image"
             id="image"
-            value={productData.imageUrl}
+            value={productData.image}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
