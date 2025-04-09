@@ -1,76 +1,72 @@
-import { motion } from "framer-motion"; // Animation library
+import { motion } from "framer-motion";
 
 const CompanyOverview = () => {
   return (
-    <section className="relative">
-      <div className="text-gray-800 py-20 backdrop-blur-lg">
-        <div className="container mx-auto px-6 md:px-12 text-center">
-          <h2 className="text-5xl font-extrabold mb-10 text-black">About Us</h2>
-          <motion.img
-            src="https://img.freepik.com/free-vector/illustration-with-business-people-design_23-2148468477.jpg?t=st=1733583642~exp=1733587242~hmac=a41d48a0fd685bd935cfdc3eb9d881e305449ef314500a3be310174af00ebbe1&w=1380" // Replace with your image path
-            alt="Animated Motor Parts"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="mx-auto w-full max-w-lg mb-10 rounded-lg shadow-lg"
-          />
-          <p className="text-xl mb-8 max-w-3xl mx-auto">
+    <section className="relative text-white py-20">
+      <div className="container mx-auto px-6 md:px-12 text-center">
+        <h2 className="text-5xl font-extrabold mb-10 bg-gradient-to-r from-yellow-400 via-green-400 to-blue-500 bg-clip-text text-transparent">
+          About Us
+        </h2>
+
+        <motion.img
+          src="https://img.freepik.com/free-vector/illustration-with-business-people-design_23-2148468477.jpg?t=st=1733583642~exp=1733587242~hmac=a41d48a0fd685bd935cfdc3eb9d881e305449ef314500a3be310174af00ebbe1&w=1380"
+          alt="Company Overview"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="mx-auto w-full max-w-3xl mb-10 rounded-2xl shadow-2xl"
+        />
+
+        <div className="backdrop-blur-md bg-gray-800/50 p-8 rounded-xl border border-white/20 max-w-4xl mx-auto mb-12">
+          <p className="text-xl mb-6">
             Welcome to{" "}
-            <span className="font-semibold text-yellow-300">
-              Motor Parts Co.
+            <span className="font-semibold text-yellow-400">
+              SumonMoto Parts Co.
             </span>{" "}
             – your trusted partner in high-quality motor parts manufacturing.
-            With decades of experience in the industry, we pride ourselves on
-            delivering exceptional products that meet the highest standards of
-            quality and performance.
           </p>
-          <p className="text-xl mb-8 max-w-3xl mx-auto">
+          <p className="text-xl mb-6">
             Our commitment to innovation and excellence has positioned us as a
-            leader in the motor parts sector. We employ cutting-edge technology
-            and a skilled workforce to ensure that every product leaving our
-            facility is crafted to perfection.
+            leader in the motor parts sector.
           </p>
-          <p className="text-xl mb-12 max-w-3xl mx-auto">
+          <p className="text-xl">
             At{" "}
-            <span className="font-semibold text-yellow-300">
-              Motor Parts Co.
+            <span className="font-semibold text-yellow-400">
+              SumonMoto Parts Co.
             </span>
             , we understand the importance of reliability and durability in the
-            automotive industry. That’s why our comprehensive range of motor
-            parts is designed to meet the diverse needs of our clients, from
-            small-scale workshops to large industrial enterprises.
+            automotive industry.
           </p>
-          <div className="flex flex-wrap justify-center">
-            <div className="w-full md:w-1/3 p-6">
-              <div className="bg-white hover:bg-blue-500 hover:text-white p-8 border rounded-lg transform hover:scale-105 duration-500 h-full">
-                <h3 className="text-3xl font-bold mb-4">Our Mission</h3>
-                <p className="text-lg">
-                  To provide top-notch motor parts that enhance the performance
-                  and longevity of vehicles, ensuring customer satisfaction and
-                  trust.
-                </p>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 p-6">
-              <div className="bg-white hover:bg-blue-500 hover:text-white p-8 border rounded-lg transform hover:scale-105 duration-500 h-full">
-                <h3 className="text-3xl font-bold mb-4">Our Vision</h3>
-                <p className="text-lg">
-                  To be the global leader in motor parts manufacturing,
-                  recognized for our quality, innovation, and commitment to
-                  excellence.
-                </p>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 p-6">
-              <div className="bg-white hover:bg-blue-500 hover:text-white p-8 border rounded-lg transform hover:scale-105 duration-500 h-full">
-                <h3 className="text-3xl font-bold mb-4">Our Values</h3>
-                <p className="text-lg">
-                  Integrity, innovation, customer focus, and continuous
-                  improvement drive everything we do.
-                </p>
-              </div>
-            </div>
-          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              title: "Our Mission",
+              desc: "To provide top-notch motor parts that enhance vehicle performance and longevity.",
+              color: "from-purple-500 to-pink-500",
+            },
+            {
+              title: "Our Vision",
+              desc: "To be the global leader in motor parts manufacturing through innovation and excellence.",
+              color: "from-blue-500 to-teal-400",
+            },
+            {
+              title: "Our Values",
+              desc: "Integrity, innovation, customer focus, and continuous improvement guide us.",
+              color: "from-yellow-400 to-orange-500",
+            },
+          ].map(({ title, desc, color }, idx) => (
+            <motion.div
+              key={idx}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+              className={`bg-gradient-to-br ${color} text-white p-8 rounded-xl shadow-lg`}
+            >
+              <h3 className="text-3xl font-bold mb-4">{title}</h3>
+              <p className="text-lg">{desc}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,29 +1,52 @@
 import { Link } from "react-router-dom";
 import backgroundImage from "../../../assets/Images/banner.jpg";
+import { motion } from "framer-motion";
 
 const Banner = () => {
-
-
   return (
     <div
-      className="w-full bg-center bg-cover h-[38rem]"
+      className="w-full h-[38rem] bg-cover bg-center relative"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="flex items-center justify-center w-full h-full bg-gray-900/40 backdrop-blur-lg">
-        <div className="text-center">
-          <h1 className="title1 text-3xl font-semibold text-white lg:text-4xl">
-            Sumon Engineered <span className="text-blue-400">Motor Parts</span>
-          </h1>
-          <p className="mt-4 text-lg text-white lg:text-xl">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent backdrop-blur-md"></div>
+
+      {/* Content */}
+      <div className="relative z-10 flex items-center justify-center h-full px-4">
+        <div className="text-center max-w-3xl">
+          <motion.h1
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-md"
+          >
+            Sumon Engineered{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600 animate-pulse">
+              Motor Parts
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2 }}
+            className="mt-6 text-lg md:text-xl text-gray-200"
+          >
             Reliable. Durable. High Performance.
-          </p>
-          <Link to="/products">
-            <button
-              className="px-5 py-2 mt-4 text-sm font-medium text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md lg:w-auto hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
-            >
-              Explore Our Products
-            </button>
-          </Link>
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="mt-8"
+          >
+            <Link to="/products">
+              <button className="px-8 py-3 text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-500 hover:to-blue-500 transition-all duration-300 rounded-full font-semibold shadow-lg hover:shadow-indigo-500/50">
+                Explore Our Products
+              </button>
+            </Link>
+          </motion.div>
         </div>
       </div>
     </div>

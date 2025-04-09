@@ -11,83 +11,93 @@ const BusinessSummary = () => {
   return (
     <div
       ref={ref}
-      className="rounded-lg shadow-lg bg-no-repeat bg-cover bg-center bg-fixed"
+      className="relative bg-fixed bg-center bg-cover py-20"
       style={{
         backgroundImage:
-          "url(https://img.freepik.com/free-vector/colored-political-world-map_23-2148319222.jpg?t=st=1733581868~exp=1733585468~hmac=1adb40a71288d4a9d29acdd86e681d614dffe1006f7e8ba7b2dcdc5d449e35ce&w=1380",
+          "url(https://img.freepik.com/free-vector/colored-political-world-map_23-2148319222.jpg)",
       }}
     >
-      <div className="p-8">
-        <div className="grid justify-items-center">
-          <div className="text-center title1">
-            <span className="py-8 font-poppins font-semibold text-5xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-              Million Bussiness Trust Us
-            </span>
-            <p className="py-4">Try To Understand Users Expectation</p>
-          </div>
-          <div className=" ">
-            <span className="inline-block w-40 h-1 bg-blue-500 rounded-full"></span>
-            <span className="inline-block w-3 h-1 mx-1 bg-blue-500 rounded-full"></span>
-            <span className="inline-block w-1 h-1 bg-blue-500 rounded-full"></span>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-green-400 to-blue-500 drop-shadow-md">
+            Million Businesses Trust Us
+          </h2>
+          <p className="text-white mt-4 text-lg">
+            We always strive to understand our user's expectations
+          </p>
+          <div className="mt-4 flex justify-center gap-1">
+            <span className="w-40 h-1 bg-teal-400 rounded-full" />
+            <span className="w-3 h-1 bg-teal-400 rounded-full" />
+            <span className="w-1 h-1 bg-teal-400 rounded-full" />
           </div>
         </div>
 
-        <div className="py-8 flex flex-wrap justify-around ">
-          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
-            <FaUsers className="text-blue-500 text-6xl mb-2" />
-            <h3 className="text-2xl font-semibold">
-              {inView ? <CountUp end={100} duration={3} /> : "0"}+
-            </h3>
-            <p className="text-gray-600">Customers Served</p>
-          </div>
-          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
-            <FaDollarSign className="text-green-500 text-6xl mb-2" />
-            <h3 className="text-2xl font-semibold">
-              {inView ? (
-                <CountUp end={120} duration={3} prefix="$" suffix="M+" />
-              ) : (
-                "$0M+"
-              )}
-            </h3>
-            <p className="text-gray-600">Annual Revenue</p>
-          </div>
-          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
-            <FaStar className="text-yellow-500 text-6xl mb-2" />
-            <h3 className="text-2xl font-semibold">
-              {inView ? <CountUp end={33000} duration={3} /> : "0"}+
-            </h3>
-            <p className="text-gray-600">Reviews</p>
-          </div>
-          <div className="summary-item flex flex-col items-center m-4 mix-blend-multiply bg-gray-300 rounded-lg p-8">
-            <FaTools className="text-red-500 text-6xl mb-2" />
-            <h3 className="text-2xl font-semibold">
-              {inView ? <CountUp end={50} duration={3} /> : "0"}+
-            </h3>
-            <p className="text-gray-600">Tools Available</p>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {[
+            {
+              icon: <FaUsers className="text-teal-400 text-6xl mb-4" />,
+              label: "Customers Served",
+              count: 100,
+              suffix: "+",
+            },
+            {
+              icon: <FaDollarSign className="text-green-400 text-6xl mb-4" />,
+              label: "Annual Revenue",
+              count: 120,
+              prefix: "$",
+              suffix: "M+",
+            },
+            {
+              icon: <FaStar className="text-yellow-400 text-6xl mb-4" />,
+              label: "Reviews",
+              count: 33000,
+              suffix: "+",
+            },
+            {
+              icon: <FaTools className="text-pink-400 text-6xl mb-4" />,
+              label: "Tools Available",
+              count: 50,
+              suffix: "+",
+            },
+          ].map(({ icon, label, count, prefix = "", suffix = "" }, i) => (
+            <div
+              key={i}
+              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-8 text-center shadow-xl hover:shadow-teal-500/30 transition-all duration-300"
+            >
+              {icon}
+              <h3 className="text-3xl font-bold text-white">
+                {inView ? (
+                  <CountUp
+                    end={count}
+                    duration={3}
+                    prefix={prefix}
+                    suffix={suffix}
+                  />
+                ) : (
+                  `${prefix}0${suffix}`
+                )}
+              </h3>
+              <p className="text-gray-300 mt-2">{label}</p>
+            </div>
+          ))}
         </div>
 
-        <div className="container mx-auto bg-white p-12 rounded-lg shadow-2xl flex flex-col md:flex-row justify-between items-center  space-y-4 md:space-y-0 md:space-x-4">
-          <div className="w-full md:w-1/2 text-center md:text-left">
-            <h3 className="text-lg text-blue-500 md:text-xl lg:text-2xl font-semibold">
-              Have any questions about us or get a product request?
+        <div className="bg-white/10 border border-white/20 backdrop-blur-md p-10 rounded-xl flex flex-col md:flex-row justify-between items-center text-white">
+          <div className="text-center md:text-left mb-6 md:mb-0">
+            <h3 className="text-2xl font-semibold mb-2 text-teal-300">
+              Have any questions or product requests?
             </h3>
-            <p className="text-sm md:text-base lg:text-lg">
-              Do not hesitate to contact us
+            <p className="text-md text-gray-300">
+              Don't hesitate to reach out!
             </p>
           </div>
-          <div className="flex flex-col md:flex-row w-full md:w-1/2 space-y-4 md:space-y-0 md:space-x-4">
-            <button
-              className="w-full align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-400 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-blue-500 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-              type="button"
-            >
-              Request For Quote
+          <div className="flex flex-col md:flex-row gap-4">
+            <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 hover:from-purple-500 hover:to-blue-500 text-white font-bold shadow-lg transition-all duration-300">
+              Request a Quote
             </button>
-
-            <button
-              className="w-full align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-              type="button"
-            >
+            <button className="px-6 py-3 rounded-lg bg-black hover:bg-gray-800 text-white font-bold border border-white/30 shadow-md transition-all duration-300">
               Contact Us
             </button>
           </div>
