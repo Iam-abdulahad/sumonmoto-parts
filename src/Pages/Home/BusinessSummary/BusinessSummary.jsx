@@ -1,6 +1,8 @@
-import { FaUsers, FaDollarSign, FaStar, FaTools } from "react-icons/fa";
+import { Users, DollarSign, Star, Wrench } from "lucide-react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
+import SectionHeader from "../../../components/ui/SectionHeader";
+import Button from "../../../components/ui/Button";
 
 const BusinessSummary = () => {
   const [ref, inView] = useInView({
@@ -11,67 +13,61 @@ const BusinessSummary = () => {
   return (
     <div
       ref={ref}
-      className="relative bg-fixed bg-center bg-cover py-20"
-      style={{
-        backgroundImage:
-          "url(https://img.freepik.com/free-vector/colored-political-world-map_23-2148319222.jpg)",
-      }}
+      className="relative bg-primary-900 py-20 border-t border-primary-800"
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Subtle background pattern or texture could go here. For now, solid primary-900 */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+      </div>
 
-      <div className="relative z-10 container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-green-400 to-blue-500 drop-shadow-md">
-            Million Businesses Trust Us
-          </h2>
-          <p className="text-white mt-4 text-lg">
-            We always strive to understand our user's expectations
-          </p>
-          <div className="mt-4 flex justify-center gap-1">
-            <span className="w-40 h-1 bg-teal-400 rounded-full" />
-            <span className="w-3 h-1 bg-teal-400 rounded-full" />
-            <span className="w-1 h-1 bg-teal-400 rounded-full" />
-          </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <SectionHeader
+            title={<span className="text-white">Trusted by Riders & Mechanics</span>}
+            subtitle="We deliver quality parts at scale, ensuring every rider has what they need to hit the road."
+            center={true}
+            className="text-neutral-400"
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {[
             {
-              icon: <FaUsers className="text-teal-400 text-6xl mb-4" />,
+              icon: <Users className="text-accent-500 w-10 h-10 mb-4" />,
               label: "Customers Served",
               count: 100,
-              suffix: "+",
+              suffix: "k+",
             },
             {
-              icon: <FaDollarSign className="text-green-400 text-6xl mb-4" />,
+              icon: <DollarSign className="text-accent-500 w-10 h-10 mb-4" />,
               label: "Annual Revenue",
               count: 120,
               prefix: "$",
               suffix: "M+",
             },
             {
-              icon: <FaStar className="text-yellow-400 text-6xl mb-4" />,
-              label: "Reviews",
-              count: 33000,
-              suffix: "+",
+              icon: <Star className="text-accent-500 w-10 h-10 mb-4" />,
+              label: "Five-Star Reviews",
+              count: 33,
+              suffix: "k+",
             },
             {
-              icon: <FaTools className="text-pink-400 text-6xl mb-4" />,
-              label: "Tools Available",
+              icon: <Wrench className="text-accent-500 w-10 h-10 mb-4" />,
+              label: "Parts Available",
               count: 50,
-              suffix: "+",
+              suffix: "k+",
             },
           ].map(({ icon, label, count, prefix = "", suffix = "" }, i) => (
             <div
               key={i}
-              className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-8 text-center shadow-xl hover:shadow-teal-500/30 transition-all duration-300"
+              className="bg-primary-800 border border-primary-700 rounded-xl p-8 text-center shadow-md hover:border-accent-500 transition-colors duration-300 flex flex-col items-center"
             >
               {icon}
-              <h3 className="text-3xl font-bold text-white">
+              <h3 className="text-4xl font-bold text-white font-heading mt-2">
                 {inView ? (
                   <CountUp
                     end={count}
-                    duration={3}
+                    duration={2.5}
                     prefix={prefix}
                     suffix={suffix}
                   />
@@ -79,27 +75,27 @@ const BusinessSummary = () => {
                   `${prefix}0${suffix}`
                 )}
               </h3>
-              <p className="text-gray-300 mt-2">{label}</p>
+              <p className="text-neutral-400 mt-2 font-medium">{label}</p>
             </div>
           ))}
         </div>
 
-        <div className="bg-white/10 border border-white/20 backdrop-blur-md p-10 rounded-xl flex flex-col md:flex-row justify-between items-center text-white">
+        <div className="bg-primary-800 border border-primary-700 p-10 rounded-xl flex flex-col md:flex-row justify-between items-center text-white">
           <div className="text-center md:text-left mb-6 md:mb-0">
-            <h3 className="text-2xl font-semibold mb-2 text-teal-300">
-              Have any questions or product requests?
+            <h3 className="text-2xl font-semibold mb-2 text-white font-heading">
+              Looking for a specific part?
             </h3>
-            <p className="text-md text-gray-300">
-              Don't hesitate to reach out!
+            <p className="text-neutral-400">
+              Our experts are ready to help you find exactly what you need.
             </p>
           </div>
-          <div className="flex flex-col md:flex-row gap-4">
-            <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 hover:from-purple-500 hover:to-blue-500 text-white font-bold shadow-lg transition-all duration-300">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button variant="primary" size="lg">
               Request a Quote
-            </button>
-            <button className="px-6 py-3 rounded-lg bg-black hover:bg-gray-800 text-white font-bold border border-white/30 shadow-md transition-all duration-300">
+            </Button>
+            <Button variant="secondary" size="lg" className="bg-transparent border-neutral-600 text-neutral-300 hover:text-neutral-900 hover:bg-neutral-100">
               Contact Us
-            </button>
+            </Button>
           </div>
         </div>
       </div>

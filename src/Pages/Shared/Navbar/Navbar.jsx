@@ -4,11 +4,11 @@ import Swal from "sweetalert2";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "../../../Firebase/firebase.config";
 import { AuthContext } from "../../../Providers/AuthProviders";
+import { Search, ShoppingCart, User, Menu, X, LogOut, Package, Star, LayoutDashboard } from "lucide-react";
 
 const auth = getAuth(app);
 
-const defaultAvatar =
-  "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png";
+const defaultAvatar = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,338 +22,198 @@ const Navbar = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   const handleLogout = () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Log out?",
+      text: "Are you sure you want to log out?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Log Out!",
+      confirmButtonColor: "#F97316", // accent-500
+      cancelButtonColor: "#64748B", // neutral-500
+      confirmButtonText: "Yes, log out",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await signOut(auth);
-        Swal.fire({
-          title: "Log Out!",
-          text: "You're successfully Logged out.",
-          icon: "success",
-        });
+        setIsOpen(false);
       }
     });
   };
 
   const isActive = (path) =>
     location.pathname === path
-      ? "border-indigo-500 text-gray-900"
-      : "border-transparent text-gray-500 hover:text-gray-700";
+      ? "text-accent-500 font-semibold"
+      : "text-neutral-700 hover:text-accent-500 transition-colors";
 
-  // Close dropdown when clicking outside
+  const isMobileActive = (path) =>
+    location.pathname === path
+      ? "text-accent-500 font-semibold bg-neutral-50"
+      : "text-neutral-700 hover:text-accent-500 hover:bg-neutral-50";
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-white shadow-sm sticky top-0 z-50 transition-all border-b border-neutral-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="title1 text-xl font-bold font-poppins">
-              SumonMoto <span className="text-sky-600">Parts</span>
+            <Link to="/" className="text-xl md:text-2xl font-bold font-heading text-primary-900 tracking-tight">
+              SumonMoto<span className="text-accent-500">.</span>
             </Link>
           </div>
-          <div className="hidden sm:flex sm:space-x-8 sm:ml-auto">
-            <Link
-              to="/"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                "/"
-              )}`}
-            >
-              Home
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex space-x-8 items-center font-medium">
+            <Link to="/" className={isActive("/")}>Home</Link>
+            <Link to="/products" className={isActive("/products")}>Products</Link>
+            <Link to="/contact" className={isActive("/contact")}>Contact</Link>
+          </div>
+
+          {/* Desktop Icons */}
+          <div className="hidden md:flex items-center space-x-5">
+            <button className="text-neutral-700 hover:text-accent-500 transition-colors" aria-label="Search">
+              <Search className="w-5 h-5" />
+            </button>
+            <Link to="/cart" className="text-neutral-700 hover:text-accent-500 transition-colors relative" aria-label="Cart">
+              <ShoppingCart className="w-5 h-5" />
+              <span className="absolute -top-1.5 -right-1.5 bg-accent-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                0
+              </span>
             </Link>
-            <Link
-              to="/products"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                "/products"
-              )}`}
-            >
-              Products
-            </Link>
-            <Link
-              to="/about"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                "/about"
-              )}`}
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                "/contact"
-              )}`}
-            >
-              Contact
-            </Link>
-            {user && userData?.role === "admin" ? (
-              <Link
-                to="/dashboard/manage_users"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                  "/dashboard"
-                )}`}
-              >
-                Dashboard
-              </Link>
-            ) : (
-              ""
-            )}
 
             {user ? (
-              <div className="relative inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                <div className="relative flex items-center my-auto">
-                  <button
-                    onClick={toggleDropdown}
-                    className="flex items-center px-1 pt-1 text-sm font-medium focus:outline-none"
-                  >
-                    <img
-                      src={user.photoURL || defaultAvatar}
-                      alt="User Avatar"
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                    <span>{user.displayName || user.email}</span>
-                    <span className="ml-2">&#x25bc;</span>
-                  </button>
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={toggleDropdown}
+                  className="flex items-center focus:outline-none focus:ring-2 focus:ring-accent-500 rounded-full"
+                >
+                  <img
+                    src={user.photoURL || defaultAvatar}
+                    alt="User"
+                    className="w-8 h-8 rounded-full border border-neutral-200 object-cover"
+                  />
+                </button>
 
-                  {isDropdownOpen && (
-                    <div
-                      className="absolute left-0 top-full mt-2 w-44 bg-white rounded-lg shadow z-10"
-                      ref={dropdownRef}
-                    >
-                      <ul
-                        className="py-2 text-sm text-gray-700"
-                        aria-labelledby="dropdownDefaultButton"
-                      >
-                        <li>
-                          <Link
-                            to="/profile"
-                            className="block px-4 py-2 hover:bg-gray-100"
-                          >
-                            My Profile
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to="/orders"
-                            className="block px-4 py-2 hover:bg-gray-100"
-                          >
-                            My Orders
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to="/add_review"
-                            className="block px-4 py-2 hover:bg-gray-100"
-                          >
-                            Add A Review
-                          </Link>
-                        </li>
-                        <li>
-                          <button
-                            onClick={handleLogout}
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                          >
-                            Sign out
-                          </button>
-                        </li>
-                      </ul>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-neutral-100 py-1 z-50 overflow-hidden transform transition-all origin-top-right">
+                    <div className="px-4 py-2 border-b border-neutral-100">
+                      <p className="text-sm font-medium text-neutral-900 truncate">{user.displayName || 'User'}</p>
+                      <p className="text-xs text-neutral-500 truncate">{user.email}</p>
                     </div>
-                  )}
-                </div>
+                    
+                    <div className="py-1">
+                      {userData?.role === "admin" && (
+                        <Link to="/dashboard/manage_users" className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-accent-500">
+                          <LayoutDashboard className="w-4 h-4 mr-2" /> Dashboard
+                        </Link>
+                      )}
+                      <Link to="/profile" className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-accent-500">
+                        <User className="w-4 h-4 mr-2" /> Profile
+                      </Link>
+                      <Link to="/orders" className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-accent-500">
+                        <Package className="w-4 h-4 mr-2" /> Orders
+                      </Link>
+                      <Link to="/add_review" className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-accent-500">
+                        <Star className="w-4 h-4 mr-2" /> Review
+                      </Link>
+                    </div>
+                    
+                    <div className="border-t border-neutral-100 py-1">
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full px-4 py-2 text-sm text-danger-500 hover:bg-red-50"
+                      >
+                        <LogOut className="w-4 h-4 mr-2" /> Sign out
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <Link
                 to="/login"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
-                  "/login"
-                )}`}
+                className="bg-accent-500 hover:bg-accent-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
-                Login
+                Sign In
               </Link>
             )}
           </div>
-          <div className="-mr-2 flex items-center sm:hidden">
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-4">
+            <Link to="/cart" className="text-neutral-700 relative">
+              <ShoppingCart className="w-5 h-5" />
+            </Link>
             <button
               onClick={toggleMenu}
-              type="button"
-              className="bg-gray-50 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
-              aria-controls="mobile-menu"
-              aria-expanded={isOpen}
+              className="text-neutral-500 hover:text-neutral-900 focus:outline-none p-1 rounded-md"
             >
-              <span className="sr-only">Open main menu</span>
-              {!isOpen ? (
-                <svg
-                  className="block h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16m-7 6h7"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="block h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              )}
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
       </div>
 
-      <div
-        className={`sm:hidden ${isOpen ? "block" : "hidden"}`}
-        id="mobile-menu"
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link
-            to="/"
-            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-              "/"
-            )}`}
-          >
-            Home
-          </Link>
-          <Link
-            to="/products"
-            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-              "/products"
-            )}`}
-          >
-            Products
-          </Link>
-          <Link
-            to="/about"
-            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-              "/about"
-            )}`}
-          >
-            About
-          </Link>
-          <Link
-            to="/contact"
-            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-              "/contact"
-            )}`}
-          >
-            Contact
-          </Link>
-          {user && userData?.role === "admin" ? (
-            <Link
-              to="/dashboard/manage_users"
-              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-                "/dashboard"
-              )}`}
-            >
-              Dashboard
-            </Link>
-          ) : (
-            ""
-          )}
-
-          {user ? (
-            <>
-              <div>
-                <button
-                  onClick={toggleDropdown}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-                    "/dashboard"
-                  )}`}
-                >
-                  {user.displayName || user.email}
-                </button>
-                {
-                  <div className="px-2 pt-2 pb-3 space-y-1">
-                    <Link
-                      to="/profile"
-                      className="block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      My Profile
-                    </Link>
-
-                    <Link
-                      to="/orders"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      My Orders
-                    </Link>
-
-                    <Link
-                      to="/add_review"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      Add A Review
-                    </Link>
+      {/* Mobile Menu Drawer */}
+      <div className={`md:hidden transform transition-all duration-300 ease-in-out ${isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
+        <div className="px-4 pt-2 pb-6 space-y-1 bg-white border-t border-neutral-100 shadow-inner">
+          <Link to="/" className={`block px-3 py-2.5 rounded-lg ${isMobileActive("/")}`} onClick={() => setIsOpen(false)}>Home</Link>
+          <Link to="/products" className={`block px-3 py-2.5 rounded-lg ${isMobileActive("/products")}`} onClick={() => setIsOpen(false)}>Products</Link>
+          <Link to="/contact" className={`block px-3 py-2.5 rounded-lg ${isMobileActive("/contact")}`} onClick={() => setIsOpen(false)}>Contact</Link>
+          
+          <div className="border-t border-neutral-200 my-2 pt-2">
+            {user ? (
+              <>
+                <div className="px-3 py-2 flex items-center space-x-3 mb-2">
+                  <img src={user.photoURL || defaultAvatar} alt="" className="w-10 h-10 rounded-full border border-neutral-200 object-cover" />
+                  <div>
+                    <p className="text-sm font-medium text-neutral-900">{user.displayName || 'User'}</p>
+                    <p className="text-xs text-neutral-500">{user.email}</p>
                   </div>
-                }
+                </div>
+                
+                {userData?.role === "admin" && (
+                  <Link to="/dashboard/manage_users" className="flex items-center px-3 py-2.5 rounded-lg text-neutral-700 hover:bg-neutral-50" onClick={() => setIsOpen(false)}>
+                    <LayoutDashboard className="w-5 h-5 mr-3 text-neutral-400" /> Dashboard
+                  </Link>
+                )}
+                <Link to="/profile" className="flex items-center px-3 py-2.5 rounded-lg text-neutral-700 hover:bg-neutral-50" onClick={() => setIsOpen(false)}>
+                  <User className="w-5 h-5 mr-3 text-neutral-400" /> Profile
+                </Link>
+                <Link to="/orders" className="flex items-center px-3 py-2.5 rounded-lg text-neutral-700 hover:bg-neutral-50" onClick={() => setIsOpen(false)}>
+                  <Package className="w-5 h-5 mr-3 text-neutral-400" /> My Orders
+                </Link>
                 <button
                   onClick={handleLogout}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-                    "/logout"
-                  )}`}
+                  className="flex items-center w-full text-left px-3 py-2.5 rounded-lg text-danger-500 hover:bg-red-50 mt-1"
                 >
-                  Logout
+                  <LogOut className="w-5 h-5 mr-3" /> Sign out
                 </button>
-              </div>
-            </>
-          ) : (
-            <Link
-              to="/login"
-              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(
-                "/login"
-              )}`}
-            >
-              Login
-            </Link>
-          )}
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="block text-center bg-accent-500 text-white px-3 py-2.5 rounded-lg font-medium mt-4"
+                onClick={() => setIsOpen(false)}
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>

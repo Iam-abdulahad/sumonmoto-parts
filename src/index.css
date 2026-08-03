@@ -1,11 +1,35 @@
-@import "animate.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply font-sans text-neutral-700 bg-neutral-50;
+  }
 
-html {
-  scroll-behavior: smooth;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading text-neutral-900;
+  }
+
+  /* Accessibility focus ring */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent-500 ring-offset-2;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for clean horizontal scrolls */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
