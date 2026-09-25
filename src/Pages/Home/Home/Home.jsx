@@ -1,17 +1,15 @@
-import ContactForm from "../../Contact/ContactForm";
 import Banner from "../Banner/Banner";
-import BusinessSummary from "../BusinessSummary/BusinessSummary";
-import CompanyOverview from "../CompanyOverview/CompanyOverview";
-import CustomerReview from "../CustomerReview/CustomerReview";
+import ShopByMotorcycle from "../ShopByMotorcycle/ShopByMotorcycle";
+import PopularCategories from "../PopularCategories/PopularCategories";
+import TrendingProducts from "../TrendingProducts/TrendingProducts";
 
 const Home = () => {
     return (
         <div>
-            <Banner></Banner>
-            <CompanyOverview></CompanyOverview>
-            <BusinessSummary></BusinessSummary>
-            <CustomerReview></CustomerReview>
-            <ContactForm></ContactForm>
+            <Banner />
+            <ShopByMotorcycle />
+            <PopularCategories />
+            <TrendingProducts />
         </div>
     );
 };

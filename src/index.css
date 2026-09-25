@@ -10,7 +10,7 @@
   }
   
   body {
-    @apply font-sans text-neutral-700 bg-neutral-50;
+    @apply font-sans text-primary-800 bg-motor-surface;
   }
 
   h1, h2, h3, h4, h5, h6 {

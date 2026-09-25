@@ -4,24 +4,30 @@ export default {
   theme: {
     extend: {
       colors: {
+        motor: {
+          charcoal: '#1A1A1A',
+          black: '#0F0F0F',
+          red: '#E1251B', // Strong red accent
+          metallic: '#9CA3AF', // Subtle metallic feel
+          surface: '#F8FAFC',
+        },
         primary: {
-          900: '#0B1220',
-          800: '#111827',
-          700: '#1F2937',
+          900: '#0F0F0F', // Near black
+          800: '#1A1A1A', // Dark charcoal
+          700: '#262626',
         },
         neutral: {
           50: '#F8FAFC',
           100: '#F1F5F9',
           200: '#E2E8F0',
-          300: '#CBD5E1', // adding for borders/secondary buttons
+          300: '#CBD5E1',
           500: '#64748B',
           700: '#334155',
           900: '#0F172A',
         },
         accent: {
-          100: '#FFEDD5',
-          500: '#F97316',
-          600: '#EA580C',
+          500: '#E1251B', // Motor red
+          600: '#B91C1C',
         },
         info: {
           500: '#2563EB',
@@ -37,7 +43,7 @@ export default {
         },
       },
       fontFamily: {
-        heading: ['Poppins', 'sans-serif'],
+        heading: ['Inter', 'sans-serif'], // Clean typography
         sans: ['Inter', 'sans-serif'],
       },
       borderRadius: {
