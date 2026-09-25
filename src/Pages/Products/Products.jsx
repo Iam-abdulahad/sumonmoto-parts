@@ -3,21 +3,51 @@ import { useEffect, useState } from "react";
 import ProductCard from "../../components/shared/ProductCard";
 
 const Products = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Filter States
+  const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [compatibilities, setCompatibilities] = useState([]);
+  const [sort, setSort] = useState("popular");
+
+  // Filter options
+  const categoryOptions = ["Engine", "Brake", "Electrical", "Suspension"];
+  const brandOptions = ["Honda", "Yamaha", "Suzuki", "Bajaj", "NGK"];
+  const compatibilityOptions = ["Honda CB Shine", "Yamaha FZ", "Suzuki Gixxer"];
+
+  const handleCheckboxChange = (setState, state, value) => {
+    if (state.includes(value)) {
+      setState(state.filter(item => item !== value));
+    } else {
+      setState([...state, value]);
+    }
+  };
+
   useEffect(() => {
+    setLoading(true);
+    
+    // Build query params
+    const params = new URLSearchParams();
+    if (search) params.append("search", search);
+    if (categories.length > 0) params.append("category", categories.join(','));
+    if (brands.length > 0) params.append("brand", brands.join(','));
+    if (compatibilities.length > 0) params.append("compatibility", compatibilities.join(','));
+    if (sort) params.append("sort", sort);
+
     axios
-      .get("https://sumonmoto-parts-server.onrender.com/products")
+      .get(`https://sumonmoto-parts-server.onrender.com/products?${params.toString()}`)
       .then((response) => {
-        // Map the existing data to include fields expected by ProductCard
+        // Map the data to ensure fields exist for UI (since existing DB items might lack them)
         const enhancedData = response.data.map(item => ({
           ...item,
           rating: item.rating || (4.0 + Math.random()).toFixed(1),
           reviewCount: item.reviewCount || Math.floor(Math.random() * 50) + 1,
           discount: item.discount || 0,
-          brand: item.brand || "GENERIC",
+          brand: item.brand || "Generic",
           compatibility: item.compatibility || ["Universal"],
           stock: item.available_quantity !== undefined ? item.available_quantity : 10
         }));
@@ -28,25 +58,15 @@ const Products = () => {
         setError(error);
         setLoading(false);
       });
-  }, []);
+  }, [search, categories, brands, compatibilities, sort]);
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-motor-red border-t-transparent rounded-full animate-spin mb-4"></div>
-          <div className="text-primary-800 font-bold uppercase tracking-widest">Loading Products...</div>
-        </div>
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold text-motor-black mb-4">Failed to load products</h2>
-        <p className="text-neutral-500 mb-6">{error.message || error}</p>
-      </div>
-    );
+  const clearFilters = () => {
+    setSearch("");
+    setCategories([]);
+    setBrands([]);
+    setCompatibilities([]);
+    setSort("popular");
+  };
 
   return (
     <div className="bg-motor-surface min-h-screen py-10">
@@ -73,32 +93,27 @@ const Products = () => {
                 <input 
                   type="text" 
                   placeholder="Search..." 
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   className="w-full border border-neutral-200 rounded-lg px-4 py-2.5 focus:border-motor-red focus:ring-1 focus:ring-motor-red outline-none transition-all"
                 />
               </div>
 
               {/* Category */}
               <div className="mb-8">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-bold text-motor-black uppercase tracking-wider text-sm">Category</h3>
-                </div>
+                <h3 className="font-bold text-motor-black uppercase tracking-wider text-sm mb-4">Category</h3>
                 <div className="space-y-3 text-sm text-neutral-600">
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Engine
-                  </label>
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Brake
-                  </label>
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Electrical
-                  </label>
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Suspension
-                  </label>
+                  {categoryOptions.map(cat => (
+                    <label key={cat} className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
+                      <input 
+                        type="checkbox" 
+                        checked={categories.includes(cat)}
+                        onChange={() => handleCheckboxChange(setCategories, categories, cat)}
+                        className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" 
+                      />
+                      {cat}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -106,18 +121,17 @@ const Products = () => {
               <div className="mb-8">
                 <h3 className="font-bold text-motor-black uppercase tracking-wider text-sm mb-4">Brand</h3>
                 <div className="space-y-3 text-sm text-neutral-600">
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Honda
-                  </label>
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Yamaha
-                  </label>
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Suzuki
-                  </label>
+                  {brandOptions.map(b => (
+                    <label key={b} className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
+                      <input 
+                        type="checkbox" 
+                        checked={brands.includes(b)}
+                        onChange={() => handleCheckboxChange(setBrands, brands, b)}
+                        className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" 
+                      />
+                      {b}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -125,18 +139,17 @@ const Products = () => {
               <div>
                 <h3 className="font-bold text-motor-black uppercase tracking-wider text-sm mb-4">Compatibility</h3>
                 <div className="space-y-3 text-sm text-neutral-600">
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Honda CB Shine
-                  </label>
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Yamaha FZ
-                  </label>
-                  <label className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
-                    <input type="checkbox" className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" />
-                    Suzuki Gixxer
-                  </label>
+                  {compatibilityOptions.map(comp => (
+                    <label key={comp} className="flex items-center hover:text-motor-red cursor-pointer transition-colors">
+                      <input 
+                        type="checkbox" 
+                        checked={compatibilities.includes(comp)}
+                        onChange={() => handleCheckboxChange(setCompatibilities, compatibilities, comp)}
+                        className="mr-3 rounded border-neutral-300 text-motor-red focus:ring-motor-red" 
+                      />
+                      {comp}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -145,22 +158,37 @@ const Products = () => {
 
           {/* Product Grid */}
           <div className="flex-1">
-            <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-xl border border-neutral-200 shadow-sm">
-              <span className="text-sm text-neutral-500 font-medium">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 bg-white p-4 rounded-xl border border-neutral-200 shadow-sm">
+              <span className="text-sm text-neutral-500 font-medium mb-2 sm:mb-0">
                 <span className="font-bold text-motor-black">{data?.length || 0}</span> Products
               </span>
               <div className="flex items-center text-sm">
                 <span className="text-neutral-500 mr-3">Sort:</span>
-                <select className="border-none bg-transparent font-bold text-motor-black focus:ring-0 cursor-pointer">
-                  <option>Popular</option>
-                  <option>Price (Low to High)</option>
-                  <option>Price (High to Low)</option>
-                  <option>Newest</option>
+                <select 
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                  className="border-none bg-transparent font-bold text-motor-black focus:ring-0 cursor-pointer"
+                >
+                  <option value="popular">Popular</option>
+                  <option value="price_asc">Price (Low to High)</option>
+                  <option value="price_desc">Price (High to Low)</option>
+                  <option value="newest">Newest</option>
                 </select>
               </div>
             </div>
 
-            {data && data.length > 0 ? (
+            {loading ? (
+               <div className="flex justify-center items-center min-h-[40vh]">
+                 <div className="animate-pulse flex flex-col items-center">
+                   <div className="w-12 h-12 border-4 border-motor-red border-t-transparent rounded-full animate-spin mb-4"></div>
+                   <div className="text-primary-800 font-bold uppercase tracking-widest text-sm">Updating...</div>
+                 </div>
+               </div>
+            ) : error ? (
+               <div className="bg-white rounded-xl border border-red-200 p-8 text-center shadow-sm">
+                 <p className="text-motor-red font-bold">Error loading data: {error.message}</p>
+               </div>
+            ) : data && data.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {data.map((product) => (
                   <ProductCard key={product._id} product={product} />
@@ -175,7 +203,7 @@ const Products = () => {
                 </div>
                 <h3 className="text-xl font-bold text-motor-black mb-2">No Parts Found</h3>
                 <p className="text-neutral-500">We couldn't find any parts matching your filters.</p>
-                <button className="mt-6 text-motor-red font-bold hover:underline">Clear all filters</button>
+                <button onClick={clearFilters} className="mt-6 text-motor-red font-bold hover:underline">Clear all filters</button>
               </div>
             )}
           </div>

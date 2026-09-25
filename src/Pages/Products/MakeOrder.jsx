@@ -65,6 +65,15 @@ const MakeOrder = () => {
         setProductData(data);
         setOrderQuantity(data.minimum_order_quantity || 1);
         setLoading(false);
+
+        // Add to recently viewed in localStorage
+        const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        const exists = recentlyViewed.find(item => item._id === data._id);
+        if (!exists) {
+          const newRecentlyViewed = [data, ...recentlyViewed].slice(0, 4); // Keep last 4
+          localStorage.setItem('recentlyViewed', JSON.stringify(newRecentlyViewed));
+        }
+
       } catch (err) {
         console.error(err);
         setError(err.message);
